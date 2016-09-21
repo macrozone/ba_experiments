@@ -4,7 +4,9 @@ import routes from './routes.jsx';
 export default {
   routes,
   actions,
-  load(context) {
-    
+  load({LocalState}, actions) {
+    actions.mockapp.nextSample();
+    LocalState.set('samplesDone', 0);
+
   }
 };

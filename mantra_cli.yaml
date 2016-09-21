@@ -38,7 +38,7 @@ templates:
   - name: 'component'
     text: |
       import React from 'react';
-      import withTheme from '/lib/withTheme';
+      import withTheme from '/manul-utils/with_theme';
 
       const Styles = ({style, ...props}, theme) => {
         return {

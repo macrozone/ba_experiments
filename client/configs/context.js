@@ -9,6 +9,9 @@ export default function () {
     Meteor,
     FlowRouter,
     Collections,
+    LocalCollections: {
+      Lines: new Meteor.Collection(null)
+    },
     LocalState: new ReactiveDict(),
     Tracker
   };

@@ -2,6 +2,7 @@ import React from 'react';
 import withTheme from '/manul-utils/with_theme';
 import PanelField from '../containers/panel_field';
 import Progress from '../containers/progress';
+import AnnotationToolBar from '/client/modules/annotations/containers/toolbar';
 import {Button, ButtonGroup, ProgressBar} from 'react-bootstrap';
 const Styles = ({style, ...props}, theme) => {
   return {
@@ -41,6 +42,8 @@ const Component = ({styles, nextSample, setCTSample, showAnnotations, toggleAnno
           now={accuracy * 100}
         />
       }/>
+
+      <AnnotationToolBar />
 
       <ButtonGroup>
         <Button

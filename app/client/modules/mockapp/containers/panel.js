@@ -25,7 +25,7 @@ export const depsMapper = (context, actions) => ({
   context: () => context,
   nextSample: actions.mockapp.nextSample,
   setCTSample: actions.mockapp.setCTSample,
-  toggleAnnotations: actions.mockapp.toggleAnnotations
+  toggleAnnotations: actions.annotations.toggleAnnotations
 });
 
 export default composeAll(

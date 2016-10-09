@@ -19,7 +19,8 @@ export const keyComposer = ({context}, onData) => {
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
-  drawPolygon: actions.annotations.drawPolygon,
+  createAnnotation: actions.annotations.createAnnotation,
+  updateAnnotation: actions.annotations.updateAnnotation,
   startNewAnnotation: actions.annotations.startNewAnnotation,
   deleteAnnotation: actions.annotations.deleteAnnotation,
   stopEditingCurrentAnnotation: actions.annotations.stopEditingCurrentAnnotation

@@ -24,7 +24,7 @@ const Styles = ({style, altKey}, theme) => {
   };
 };
 
-const Component = ({styles, showAnnotations, image, cursorPosition, drawPolygon, currentToolId}) => {
+const Component = ({styles, showAnnotations, image, cursorPosition, currentToolId}) => {
   const width = 800;
   const height = 600;
 

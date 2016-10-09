@@ -4,7 +4,9 @@
  */
 
   // Internet Explorer doesn't support ImageData().
-export default function (width, height) {
-  const context = document.createElement('canvas').getContext('2d');
-  return context.createImageData(width, height);
-}
+export default {
+  createImageData(width, height) {
+    const context = document.createElement('canvas').getContext('2d');
+    return context.createImageData(width, height);
+  }
+};

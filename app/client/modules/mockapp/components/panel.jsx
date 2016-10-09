@@ -23,13 +23,13 @@ const accuracyBsStyle = (accuracy) => {
   return 'success';
 
 };
-const Component = ({styles, nextSample, setCTSample, showRois, toggleRois, accuracy, classification}) => {
+const Component = ({styles, nextSample, setCTSample, showAnnotations, toggleAnnotations, accuracy, classification}) => {
 
   return (
     <div style={styles.base}>
       <Button
-        onClick={() => toggleRois()} bsStyle="default">
-          {showRois ? 'Hide ROIs' : 'Show ROIs'}
+        onClick={() => toggleAnnotations()} bsStyle="default">
+          {showAnnotations ? 'Hide Annotations' : 'Show Annotations'}
       </Button>
       <br />
       <br />

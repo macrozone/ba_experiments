@@ -1,3 +1,4 @@
+import Annotations from './annotations';
 export {
-  undefined
+  Annotations
 };

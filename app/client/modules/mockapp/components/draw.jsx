@@ -23,32 +23,51 @@ const Styles = ({style, altKey}, theme) => {
   };
 };
 
-const Component = ({styles, altKey, deleteRoi, showRois, image, rois, currentRoiId, startNewRoi, stopCurrentRoi, draw}) => {
+const Component = ({styles, altKey, deleteAnnotation, cursorPosition, showAnnotations, image, annotations, currentAnnotationId, startNewAnnotation, stopCurrentAnnotation, draw}) => {
   const width = 800;
   const height = 600;
+  const freehandEvents = {
+    onMouseMove: (e) => currentAnnotationId ? draw(currentAnnotationId, e.nativeEvent.offsetX, e.nativeEvent.offsetY) : null,
+    onMouseDown: startNewAnnotation,
+    onMouseUp: stopCurrentAnnotation
+  };
 
+  const polygonEvents = {
+    onClick: (e) => draw(currentAnnotationId, e.nativeEvent.offsetX, e.nativeEvent.offsetY)
+  };
 
   return (
     <div
-
+      {...polygonEvents}
       style={styles.base}
-      onMouseMove={
-        (e) => currentRoiId ? draw(currentRoiId, e.nativeEvent.offsetX, e.nativeEvent.offsetY) : null}
-      onMouseDown={startNewRoi}
-      onMouseUp={stopCurrentRoi}>
+
+      >
       <Stage style={styles.canvas} width={width} height={height} >
         <Layer>
-          {showRois ? rois.map(({_id, points, color}, index) => {
+          {showAnnotations ? annotations.map(({_id, points, color, tension}, index) => {
             const colorInstance = Color(color);
-            return (
+            const isCurrent = currentAnnotationId === _id;
+            const colors = {
+              stroke:colorInstance.clearer(0.2).rgbString(),
+              fill:colorInstance.clearer(altKey ? 0.5 : 0.8).rgbString()
+            };
+            return [
               <Line
                 key={index}
-                points={points}
-                onClick={() => altKey ? deleteRoi(_id) : null}
-                stroke={colorInstance.clearer(0.2).rgbString()}
-                fill={colorInstance.clearer(altKey ? 0.5 : 0.8).rgbString()}
-                closed tension={0} />
-              );
+                points={isCurrent ? [ ...points, cursorPosition.x, cursorPosition.y ] : points}
+                onClick={() => altKey ? deleteAnnotation(_id) : null}
+                {...colors}
+                tension={tension}
+                closed={!isCurrent}
+                 />,
+              isCurrent ?
+              <Circle
+                radius={5}
+                x={points[0]}
+                y={points[1]}
+                onClick={stopCurrentAnnotation}
+                {...colors}/> : null
+            ];
           }
         ) : null}
 

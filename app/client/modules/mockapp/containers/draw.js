@@ -7,7 +7,7 @@ export const composer = ({context}, onData) => {
   const showAnnotations = LocalState.get('annotations.showAnnotations');
   const currentToolId = LocalState.get('annotations.currentToolId');
   const segmentationOpacity = LocalState.get('annotations.segmentationOpacity');
-  onData(null, {showAnnotations, currentToolId});
+  onData(null, {showAnnotations, segmentationOpacity, currentToolId});
 };
 
 export const imageComposer = ({context}, onData) => {
@@ -18,7 +18,7 @@ export const imageComposer = ({context}, onData) => {
   image.src = imageUrl;
   image.setAttribute('crossOrigin', '');
   image.onload = () => {
-    console.log(imageUrl);
+
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = image.width;
@@ -26,12 +26,11 @@ export const imageComposer = ({context}, onData) => {
     ctx.drawImage(image, 0, 0 );
     const imageData = ctx.getImageData(0, 0, image.width, image.height);
 
-    const segmentation = Segmentation.create(imageData);
+    const segmentation = Segmentation.create(imageData, {method: 'slic', regionSize: 25});
 
     segmentation.image = new Image();
     ctx.putImageData(segmentation.result,0,0);
     segmentation.image.src = canvas.toDataURL();
-    console.log(segmentation);
 
     onData(null, {image, width: image.width, height: image.height, imageUrl, segmentation});
   };

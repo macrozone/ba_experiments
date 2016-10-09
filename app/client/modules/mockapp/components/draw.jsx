@@ -25,7 +25,7 @@ const Styles = ({style, altKey}, theme) => {
 };
 
 const Component = ({styles, showAnnotations, width, height,image, segmentationOpacity, segmentation, cursorPosition}) => {
-
+  console.log(segmentationOpacity);
   return (
     <div
       style={{...styles.base, width, height}}

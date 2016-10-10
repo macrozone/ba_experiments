@@ -9,6 +9,8 @@
  *  http://ivrl.epfl.ch/research/superpixels
  *
  * Copyright 2015  Kota Yamaguchi
+ * -----
+ * ES2015 transcription 2016 Marco Wettstein, ZHAW
  */
 import BaseSegmentation from './base';
 import compat from '../compat';

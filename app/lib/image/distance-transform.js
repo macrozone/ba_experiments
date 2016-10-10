@@ -5,6 +5,8 @@
  * Theory of Computing, Vol. 8, No. 19, September 2012
  *
  * Copyright 2015  Kota Yamaguchi
+ * -----
+ * ES2015 transcription 2016 Marco Wettstein, ZHAW
  */
 import compat from './compat';
 

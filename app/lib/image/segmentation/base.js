@@ -2,6 +2,8 @@
  * Base class for over-segmentation algorithms.
  *
  * Copyright 2015  Kota Yamaguchi
+ * -----
+ * ES2015 transcription 2016 Marco Wettstein, ZHAW
  */
 import compat from '../compat';
 

@@ -19,6 +19,8 @@
  * * `minRegionSize` - Minimum segment size in pixels.
  *
  * Copyright 2014  LongLong Yu.
+ * -----
+ * ES2015 transcription 2016 Marco Wettstein, ZHAW
  */
 import BaseSegmentation from './base';
 import compat from '../compat';

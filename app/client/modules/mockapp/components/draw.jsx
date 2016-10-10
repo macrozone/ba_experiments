@@ -3,6 +3,7 @@ import withTheme from '/manul-utils/with_theme';
 import {Layer, Line, Circle, Rect, Stage, Group, Image} from 'react-konva';
 import Color from 'color';
 import Annotations from '/client/modules/annotations/containers/annotations';
+import SegmentationImage from '/client/modules/segmentation/containers/segmentation_image';
 const Styles = ({style, altKey}, theme) => {
   return {
     base: [
@@ -24,7 +25,7 @@ const Styles = ({style, altKey}, theme) => {
   };
 };
 
-const Component = ({styles, showAnnotations, width, height,image, segmentationOpacity, getLabelForClick, segmentation, cursorPosition}) => {
+const Component = ({styles, showAnnotations, width, height,image, segmentation, cursorPosition}) => {
 
   return (
     <div
@@ -35,20 +36,12 @@ const Component = ({styles, showAnnotations, width, height,image, segmentationOp
           <Image image={image} />
         </Layer>
         <Layer>
-          <Image
-            opacity={segmentationOpacity}
-            image={segmentation.image}
-            onClick={({target, evt: {x,y}}) => {
-              console.log(x,y);
-              console.log(target);
-              const label = getLabelForClick(x,y);
-              console.log(label);
-            }}
-            />
+          <SegmentationImage segmentation={segmentation} />
+
         </Layer>
         <Layer>
           { showAnnotations ?
-            <Annotations width={width} height={height} cursorPosition={cursorPosition}/> :
+            <Annotations width={width} height={height} cursorPosition={cursorPosition} segmentation={segmentation}/> :
             null}
         </Layer>
 

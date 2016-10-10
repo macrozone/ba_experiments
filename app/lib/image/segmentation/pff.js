@@ -16,6 +16,8 @@
  * * `minSize` - Minimum segment size in pixels. Default 20.
  *
  * Copyright 2015  Kota Yamaguchi
+ * -----
+ * ES2015 transcription 2016 Marco Wettstein, ZHAW
  */
  import BaseSegmentation from './base';
  import compat from '../compat';

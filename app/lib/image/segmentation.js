@@ -7,6 +7,8 @@
  *  segm.coarser();
  *
  * Copyright 2015  Kota Yamaguchi
+ * -----
+ * ES2015 transcription 2016 Marco Wettstein, ZHAW
  */
 
 import pff from './segmentation/pff';

@@ -1,13 +1,15 @@
 import {useDeps, composeAll, composeWithTracker, compose} from 'mantra-core';
 import Draw from '../components/draw.jsx';
 import withMousePosition from '../../core/hocs/with_mouse_position';
+import withCurrentImage from '../../core/hocs/with_current_image';
 import Segmentation from '/lib/image/segmentation';
+
 export const composer = ({context}, onData) => {
   const {LocalState} = context();
   const showAnnotations = LocalState.get('annotations.showAnnotations');
   const currentToolId = LocalState.get('annotations.currentToolId');
-  const segmentationOpacity = LocalState.get('segmentation.opacity');
-  onData(null, {showAnnotations, segmentationOpacity, currentToolId});
+
+  onData(null, {showAnnotations, currentToolId});
 };
 
 export const imageComposer = ({context}, onData) => {
@@ -24,7 +26,6 @@ export const imageComposer = ({context}, onData) => {
 
 };
 
-
 export const segmentationComposer = ({context, image}, onData) => {
   const {LocalState} = context();
   const regionSize = LocalState.get('segmentation.regionSize');
@@ -36,10 +37,9 @@ export const segmentationComposer = ({context, image}, onData) => {
   const imageData = ctx.getImageData(0, 0, image.width, image.height);
 
   const segmentation = Segmentation.create(imageData, {method: 'slic', regionSize});
-
-  segmentation.image = new Image();
   ctx.putImageData(segmentation.result,0,0);
-  segmentation.image.src = canvas.toDataURL();
+
+
   function _getEncodedLabel(array, offset) {
     return array[offset] |
            (array[offset + 1] << 8) |
@@ -72,12 +72,16 @@ export const segmentationComposer = ({context, image}, onData) => {
 
 
 
-
-
-  onData(null, { segmentation, getLabelForClick});
-
+  onData(null, { segmentation: {
+    ...segmentation,
+    canvas,
+    getLabelForClick
+  }});
 
 };
+
+
+
 
 
 export const keyComposer = ({context}, onData) => {
@@ -94,6 +98,6 @@ export default composeAll(
   composeWithTracker(keyComposer),
   composeWithTracker(composer),
   composeWithTracker(segmentationComposer),
-  composeWithTracker(imageComposer),
+  withCurrentImage(),
   useDeps(depsMapper)
 )(Draw);

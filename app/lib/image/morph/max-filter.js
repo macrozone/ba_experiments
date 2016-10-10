@@ -1,6 +1,8 @@
 /** Max filter for an index image.
  *
  * Copyright 2015  Kota Yamaguchi
+ * -----
+ * ES2015 transcription 2016 Marco Wettstein, ZHAW
  */
 import NeighborMap from './neighbor-map';
 function findDominantLabel(data, neighbors) {

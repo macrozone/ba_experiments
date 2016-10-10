@@ -9,7 +9,8 @@
  *  TODO:
  *  * Edge options other than canny.
  *  * Create a graph-structure for coarse/fine adjustment.
- *
+ * -----
+ * ES2015 transcription 2016 Marco Wettstein, ZHAW
  */
  /* eslint guard-for-in: 0*/
 

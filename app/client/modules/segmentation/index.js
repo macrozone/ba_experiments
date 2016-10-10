@@ -5,7 +5,7 @@ export default {
   routes,
   actions,
   load({LocalState}) {
-    LocalState.set('segmentation.opacity', 0.5);
-    LocalState.set('segmentation.regionSize', 15);
+    LocalState.set('segmentation.opacity', 0);
+    LocalState.set('segmentation.regionSize', 40);
   }
 };

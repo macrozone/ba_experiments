@@ -1,8 +1,8 @@
 const {describe, it} = global;
 import {expect} from 'chai';
 import {shallow} from 'enzyme';
-import OpacitySlider from '../opacity_slider';
+import Options from '../options';
 
-describe('annotations.components.opacity_slider', () => {
+describe('segmentation.components.options', () => {
   it('should do something');
 });

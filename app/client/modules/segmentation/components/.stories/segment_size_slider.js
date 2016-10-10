@@ -1,12 +1,12 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import { setComposerStub } from 'react-komposer';
-import OpacitySlider from '../opacity_slider';
+import RegionSizeSlider from '../region_size_slider';
 
 
-storiesOf('annotations.OpacitySlider', module)
+storiesOf('segmentation.RegionSizeSlider', module)
   .addWithInfo('default view', 'This is the default view', () => {
     return (
-      <OpacitySlider />
+      <RegionSizeSlider />
     );
   })

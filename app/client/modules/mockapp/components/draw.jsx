@@ -24,8 +24,8 @@ const Styles = ({style, altKey}, theme) => {
   };
 };
 
-const Component = ({styles, showAnnotations, width, height,image, segmentationOpacity, segmentation, cursorPosition}) => {
-  console.log(segmentationOpacity);
+const Component = ({styles, showAnnotations, width, height,image, segmentationOpacity, getLabelForClick, segmentation, cursorPosition}) => {
+
   return (
     <div
       style={{...styles.base, width, height}}
@@ -35,7 +35,16 @@ const Component = ({styles, showAnnotations, width, height,image, segmentationOp
           <Image image={image} />
         </Layer>
         <Layer>
-          <Image opacity={segmentationOpacity} image={segmentation.image} />
+          <Image
+            opacity={segmentationOpacity}
+            image={segmentation.image}
+            onClick={({target, evt: {x,y}}) => {
+              console.log(x,y);
+              console.log(target);
+              const label = getLabelForClick(x,y);
+              console.log(label);
+            }}
+            />
         </Layer>
         <Layer>
           { showAnnotations ?

@@ -1,9 +1,9 @@
 const {describe, it} = global;
 import {expect} from 'chai';
 import {stub, spy} from 'sinon';
-import {composer} from '../segmentation_opacity_slider';
+import {composer} from '../region_size_slider';
 
-describe('annotations.containers.segmentation_opacity_slider', () => {
+describe('segmentation.containers.region_size_slider', () => {
   describe('composer', () => {
 
 //    const Tracker = {nonreactive: cb => cb()};

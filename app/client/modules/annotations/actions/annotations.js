@@ -29,7 +29,4 @@ export default {
     LocalState.set('annotations.currentToolId', toolId);
     LocalState.delete('annotations.currentEditingAnnotationId');
   },
-  setSegmentationOpacity({LocalState}, opacity) {
-    LocalState.set('annotations.segmentationOpacity', opacity);
-  }
 };

@@ -28,14 +28,14 @@ const Component = ({styles, opacity, setOpacity}) => {
   );
 };
 
-const SegmentationOpacitySlider = withTheme(Styles, Component);
+const OpacitySlider = withTheme(Styles, Component);
 
-SegmentationOpacitySlider.propTypes = {
+OpacitySlider.propTypes = {
 };
 
-SegmentationOpacitySlider.defaultProps = {
+OpacitySlider.defaultProps = {
 };
 
-SegmentationOpacitySlider.displayName = 'SegmentationOpacitySlider';
-Component.displayName = 'withTheme(SegmentationOpacitySlider)';
-export default SegmentationOpacitySlider;
+OpacitySlider.displayName = 'OpacitySlider';
+Component.displayName = 'withTheme(OpacitySlider)';
+export default OpacitySlider;

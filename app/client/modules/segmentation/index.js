@@ -6,6 +6,6 @@ export default {
   actions,
   load({LocalState}) {
     LocalState.set('segmentation.opacity', 0);
-    LocalState.set('segmentation.regionSize', 40);
+    LocalState.set('segmentation.regionSize', 30);
   }
 };

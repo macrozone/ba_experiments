@@ -26,7 +26,7 @@ export default ({
         annotationData.data[pixel] = 255;// result.data[pixel];
         annotationData.data[pixel + 1] = 0;// result.data[pixel];
         annotationData.data[pixel + 2] = 0;// result.data[pixel];
-        annotationData.data[pixel + 3] = 255;
+        annotationData.data[pixel + 3] = 128;
       }
       // console.log(annotationData.data);
       annotationContext.putImageData(annotationData, 0,0);

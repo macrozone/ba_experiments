@@ -8,11 +8,11 @@ export const composer = ({context, props, image}, onData) => {
     const imageUrl = annotationBitmap.link();
     image.src = imageUrl;
     image.onload = () => {
-      onData(null, {image});
+      onData(null, {loaded: image.complete,image});
     };
   }
 
-  onData(null, {image});
+  onData(null, {loaded: image.complete, image});
 };
 
 export const depsMapper = (context, actions) => ({

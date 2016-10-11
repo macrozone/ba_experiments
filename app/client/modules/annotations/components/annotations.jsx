@@ -6,7 +6,11 @@ import Polygon from '../components/polygon';
 import Circle from '../components/circle';
 import Bitmap from '../containers/bitmap';
 import _ from 'lodash';
-
+const componentMap = {
+  circle: Circle,
+  polygon: Polygon,
+  bitmap: Bitmap
+};
 
 
 const Annotations = ({
@@ -20,11 +24,6 @@ const Annotations = ({
     width, height
   }) => {
 
-  const componentMap = {
-    circle: Circle,
-    polygon: Polygon,
-    bitmap: Bitmap
-  };
   const renderAnnotation = ({_id, type, color, props}) => {
     const isCurrent = currentEditingAnnotation && currentEditingAnnotation._id === _id;
     const onClick = (e) => {

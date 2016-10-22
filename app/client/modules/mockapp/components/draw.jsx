@@ -1,8 +1,9 @@
 import React from 'react';
 import withTheme from '/manul-utils/with_theme';
-import {Layer, Line, Circle, Rect, Stage, Group} from 'react-konva';
+import {Layer, Line, Circle, Rect, Stage, Group, Image} from 'react-konva';
 import Color from 'color';
 import Annotations from '/client/modules/annotations/containers/annotations';
+import SegmentationImage from '/client/modules/segmentation/containers/segmentation_image';
 const Styles = ({style, altKey}, theme) => {
   return {
     base: [
@@ -24,21 +25,28 @@ const Styles = ({style, altKey}, theme) => {
   };
 };
 
-const Component = ({styles, showAnnotations, image, cursorPosition, currentToolId}) => {
-  const width = 800;
-  const height = 600;
-
+const Component = ({styles, showAnnotations, width, height,image, segmentation, cursorPosition}) => {
 
   return (
     <div
-      style={styles.base}
+      style={{...styles.base, width, height}}
       >
       <Stage style={styles.canvas} width={width} height={height} >
         <Layer>
-          { showAnnotations ? <Annotations width={width} height={height} cursorPosition={cursorPosition}/> : null}
+          <Image image={image} />
         </Layer>
+        <Layer>
+          <SegmentationImage segmentation={segmentation} />
+
+        </Layer>
+        <Layer>
+          { showAnnotations ?
+            <Annotations width={width} height={height} cursorPosition={cursorPosition} segmentation={segmentation}/> :
+            null}
+        </Layer>
+
      </Stage>
-      <img style={styles.image} width={width} height={height} src={image} />
+
     </div>
   );
 };

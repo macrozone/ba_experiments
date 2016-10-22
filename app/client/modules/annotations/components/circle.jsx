@@ -2,7 +2,7 @@ import React from 'react';
 import {Layer, Line, Circle, Rect, Stage, Group} from 'react-konva';
 import Color from 'color';
 
-import {distance} from '../libs/vector_tools';
+import {distance} from '../libs/utilities';
 
 const CircleAnnotation = ({isCurrent, isSelected, color, cursorPosition, onClick, props, draggable}) => {
   const {point, radius} = props;

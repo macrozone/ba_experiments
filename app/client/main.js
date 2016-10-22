@@ -5,6 +5,7 @@ import initContext from './configs/context';
 import coreModule from './modules/core';
 import mockappModule from './modules/mockapp';
 import annotationsModule from './modules/annotations';
+import segmentationModule from './modules/segmentation';
 
 // init context
 const context = initContext();
@@ -14,4 +15,5 @@ const app = createApp(context);
 app.loadModule(coreModule);
 app.loadModule(mockappModule);
 app.loadModule(annotationsModule);
+app.loadModule(segmentationModule);
 app.init();

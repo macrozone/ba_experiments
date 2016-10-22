@@ -7,6 +7,7 @@ export const composer = ({context}, onData) => {
   const tools = [
     {_id: 'polygon', label: 'Polygon'},
     {_id: 'circle', label: 'Circle'},
+    {_id: 'superpixels', label: 'Super Pixels'}
   ];
   onData(null, {tools, currentToolId});
 };

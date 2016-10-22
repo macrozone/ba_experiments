@@ -16,7 +16,7 @@ export const composer = ({context}, onData) => {
   const n = _.sample([ '0','1', '2', '3', 'X' ]);
   const m = _.sample([ '0','1' ]);
   const classification = `T:${t} N:${n} M:${m}`;
-  const showAnnotations = LocalState.get('mockapp.showAnnotations');
+  const showAnnotations = LocalState.get('annotations.showAnnotations');
 
   onData(null, {accuracy, showAnnotations, classification});
 };

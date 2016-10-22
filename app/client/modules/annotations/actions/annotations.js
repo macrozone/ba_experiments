@@ -28,5 +28,5 @@ export default {
   activateTool({LocalState}, toolId) {
     LocalState.set('annotations.currentToolId', toolId);
     LocalState.delete('annotations.currentEditingAnnotationId');
-  }
+  },
 };

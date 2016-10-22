@@ -4,7 +4,8 @@ import routes from './routes.jsx';
 export default {
   routes,
   actions,
-  load(context) {
-    
+  load({LocalState}) {
+
+    LocalState.set('annotations.showAnnotations', true);
   }
 };

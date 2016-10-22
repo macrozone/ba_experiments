@@ -12,6 +12,7 @@ export default function () {
     Collections,
     LocalState: new ReactiveDict(),
     Tracker,
-    Keypress
+    Keypress,
+    AnnotationNodesCache: new WeakMap()
   };
 }

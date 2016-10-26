@@ -1,48 +1,47 @@
 import React from 'react';
-import withTheme from '/manul-utils/with_theme';
-import {Renderer, Scene, PerspectiveCamera, MeshBasicMaterial, Mesh} from 'react-three';
+import {Renderer, Scene, PerspectiveCamera, Mesh} from 'react-three';
 import _ from 'lodash';
 import THREE from 'three';
 const OrbitControls = require('three-orbit-controls')(THREE);
 
-
-const SliceY = ({index}) => {
-  const texture = THREE.ImageUtils.loadTexture( `asset/slices_y_z_x/slice_${index}.jpg` );
-  texture.magFilter = THREE.NearestFilter;
-  texture.minFilter = THREE.NearestFilter;
-  return <Mesh
-        position={new THREE.Vector3(0, 50 - index / 4, 0)}
-        rotation={new THREE.Euler(90 * Math.PI / 180, 0, 0)}
-        material={new THREE.MeshBasicMaterial({
-          map: texture,
-          opacity: 0.05,
-          transparent: true,
-          depthTest: false,
-          blending: THREE.AdditiveBlending,
-          side: THREE.DoubleSide
-
-        })}
-        geometry={new THREE.PlaneGeometry(200 / 2, 200 / 2)}
-        />;
+const FOLDERS = {
+  y: 'asset/slices_y_z_x',
+  x: 'asset/slices_x_z_y'
 };
-const SliceX = ({index}) => {
-  const texture = THREE.ImageUtils.loadTexture( `asset/slices_x_z_y/slice_${index}.jpg` );
+const rotationAndPosition = ({index, axis}) => {
+  // need to define for y as well?
+  switch (axis) {
+    case 'y': return {
+      position: new THREE.Vector3(0, 50 - index / 4, 0),
+      rotation: new THREE.Euler(90 * Math.PI / 180, 0, 0)
+    };
+    case 'x': return {
+      position: new THREE.Vector3(0, 0, 50 - index / 2),
+      rotation: new THREE.Euler(0, 0, 0)
+    };
+  }
+};
+const Slice = ({index, axis, opacity}) => {
+  // y
+  const texture = THREE.ImageUtils.loadTexture(`${FOLDERS[axis]}/slice_${index}.jpg` );
   texture.magFilter = THREE.NearestFilter;
   texture.minFilter = THREE.NearestFilter;
-  return <Mesh
-        position={new THREE.Vector3(0,0,50 - index / 2)}
-        rotation={new THREE.Euler(0, 0, 0)}
+  const {position, rotation} = rotationAndPosition({index, axis});
+  return (
+    <Mesh
+        position={position}
+        rotation={rotation}
         material={new THREE.MeshBasicMaterial({
           map: texture,
-          opacity: 0.05,
+          opacity,
           transparent: true,
           depthTest: false,
           blending: THREE.AdditiveBlending,
           side: THREE.DoubleSide
-
         })}
         geometry={new THREE.PlaneGeometry(200 / 2, 200 / 2)}
-        />;
+        />
+      );
 };
 
 
@@ -59,52 +58,47 @@ const Pet3DViewer = class extends React.Component {
 
   constructor(props, context) {
     super(props, context);
-
     // construct the position vector here, because if we use 'new' within render,
     // React will think that things have changed when they have not.
     this.cameraPosition = new THREE.Vector3(0, 0, 100);
-
-    this.state = {
-      cubeRotation: new THREE.Euler(),
-    };
-
   }
 
   render() {
-
+    const opacity = this.props.opacity;
     const width = window.innerWidth; // canvas width
     const height = window.innerHeight; // canvas height
-
-    return (<Renderer
-
-      width={width}
-      height={height}
-
-
-    >
-      <Scene camera="maincamera" width={width} height={height}>
-        <PerspectiveCamera
-          name="maincamera"
-          ref="camera"
-          fov={75}
-          aspect={width / height}
-          near={0.1}
-          far={1000}
-          position={this.cameraPosition}
-        />
-        {_.range(0, 395).map(
-          index => (
-            <SliceY index={index} key={index} />
-          )
-        )}
-        {_.range(0, 200).map(
-          index => (
-            <SliceX index={index} key={index} />
-          )
-        )}
-
-      </Scene>
-    </Renderer>);
+    const slices = {
+      y: _.range(0, 395),
+      x: _.range(0, 200)
+    };
+    return (
+      <Renderer
+        width={width}
+        height={height}
+      >
+        <Scene camera="maincamera" width={width} height={height}>
+          <PerspectiveCamera
+            name="maincamera"
+            ref="camera"
+            fov={75}
+            aspect={width / height}
+            near={0.1}
+            far={1000}
+            position={this.cameraPosition}
+          />
+          {slices.x.map(
+            index => (
+              <Slice axis="x" opacity={opacity} index={index} key={index} />
+            )
+          )}
+          {slices.y.map(
+            index => (
+              <Slice axis="y" opacity={opacity} index={index} key={index} />
+            )
+          )}
+        </Scene>
+      </Renderer>
+    );
   }
 };
 

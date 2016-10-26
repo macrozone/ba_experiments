@@ -1,24 +1,22 @@
 import {useDeps, composeAll, composeWithTracker, compose} from 'mantra-core';
-import Pet3DViewer from '../components/pet_3_d_viewer.jsx';
+import ToggleAxesButton from '../components/toggle_axes_button.jsx';
 
 export const composer = ({context}, onData) => {
   const {Meteor, LocalState} = context();
-  const opacity = LocalState.get('pet_3_d_viewer.opacity');
+  const showAxes = LocalState.get('pet_3_d_viewer.showAxes');
 
-  const addRay = (ray) => {
-
-    const rays = LocalState.get('pet_3_d_viewer.rays') || [];
-    rays.push(ray);
-    LocalState.set('pet_3_d_viewer.rays', rays);
-  };
-  onData(null, {opacity, addRay});
+  onData(null, {showAxes});
 };
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
+  toggleAxes: () => context.LocalState.set(
+    'pet_3_d_viewer.showAxes',
+    !context.LocalState.get('pet_3_d_viewer.showAxes')
+  )
 });
 
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(Pet3DViewer);
+)(ToggleAxesButton);

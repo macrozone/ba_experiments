@@ -1,17 +1,19 @@
 import React from 'react';
 import {mount} from 'react-mounter';
 
-import MainLayout from '/client/modules/core/components/main_layout.jsx';
+import AppLayout from '/client/modules/core/components/app_layout.jsx';
 
 import Pet3dViewer from './containers/pet_3_d_viewer';
+import Pet3dViewerPanel from './containers/pet_3_d_viewer_panel';
 
 export default function (injectDeps, {FlowRouter}) {
-  const MainLayoutCtx = injectDeps(MainLayout);
+  const AppLayoutCtx = injectDeps(AppLayout);
   FlowRouter.route('/pet3dviewer', {
     name: 'pet3dviewer',
     action() {
-      mount(MainLayoutCtx, {
-        content: () => (<Pet3dViewer />)
+      mount(AppLayoutCtx, {
+        main: () => (<Pet3dViewer />),
+        panel: () => (<Pet3dViewerPanel />)
       });
     }
   });

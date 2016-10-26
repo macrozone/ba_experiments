@@ -1,18 +1,19 @@
 import {useDeps, composeAll, composeWithTracker, compose} from 'mantra-core';
-import OpacitySlider from '../components/opacity_slider.jsx';
+import Slider from '../components/slider.jsx';
+import _ from 'lodash';
 
-export const composer = ({context, localState}, onData) => {
+export const composer = ({context, localState, debounce = 300}, onData) => {
   const {Meteor, LocalState} = context();
   const value = LocalState.get(localState);
-  onData(null, {value});
+  const setValue = _.debounce((newValue) => LocalState.set(localState, newValue), debounce);
+  onData(null, {setValue, value});
 };
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
-  setOpacity: actions.segmentation.setOpacity
 });
 
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(OpacitySlider);
+)(Slider);

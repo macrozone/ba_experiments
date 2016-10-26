@@ -1,4 +1,9 @@
 {
+  "assetPath": "/var/www/assets",
+  "auth": {
+    "username": "4quant",
+    "password": "radiologehändsschwär"
+  },
   "public": {
 
   }

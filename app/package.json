@@ -4,7 +4,8 @@
   "description": "kmeans",
   "scripts": {
     "test": "mocha .scripts/mocha_boot.js client/**/tests/**/*.js --compilers js:babel-core/register",
-    "storybook": "start-storybook -p 9001"
+    "storybook": "start-storybook -p 9001",
+    "start": "meteor --settings settings_dev.json"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
     "konva": "^1.2.1",
     "lodash": "^4.15.0",
     "mantra-core": "^1.2.0",
+    "mime-types": "^2.1.12",
     "radium": "^0.18.1",
     "random-color": "^1.0.1",
     "react": "^15.3.1",

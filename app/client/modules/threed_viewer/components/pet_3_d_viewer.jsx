@@ -6,8 +6,8 @@ import THREE from 'three';
 const OrbitControls = require('three-orbit-controls')(THREE);
 
 
-const Slice = ({index}) => {
-  const texture = THREE.ImageUtils.loadTexture( `slices_y_z_x/slice_${index}.jpg` );
+const SliceY = ({index}) => {
+  const texture = THREE.ImageUtils.loadTexture( `asset/slices_y_z_x/slice_${index}.jpg` );
   texture.magFilter = THREE.NearestFilter;
   texture.minFilter = THREE.NearestFilter;
   return <Mesh
@@ -25,8 +25,8 @@ const Slice = ({index}) => {
         geometry={new THREE.PlaneGeometry(200 / 2, 200 / 2)}
         />;
 };
-const Slice2 = ({index}) => {
-  const texture = THREE.ImageUtils.loadTexture( `slices_x_z_y/slice_${index}.jpg` );
+const SliceX = ({index}) => {
+  const texture = THREE.ImageUtils.loadTexture( `asset/slices_x_z_y/slice_${index}.jpg` );
   texture.magFilter = THREE.NearestFilter;
   texture.minFilter = THREE.NearestFilter;
   return <Mesh
@@ -74,7 +74,6 @@ const Pet3DViewer = class extends React.Component {
 
     const width = window.innerWidth; // canvas width
     const height = window.innerHeight; // canvas height
-    const numberOfSlices = 395;
 
     return (<Renderer
 
@@ -93,14 +92,14 @@ const Pet3DViewer = class extends React.Component {
           far={1000}
           position={this.cameraPosition}
         />
-        {_.range(0, numberOfSlices).map(
+        {_.range(0, 395).map(
           index => (
-            <Slice index={index} key={index} />
+            <SliceY index={index} key={index} />
           )
         )}
         {_.range(0, 200).map(
           index => (
-            <Slice2 index={index} key={index} />
+            <SliceX index={index} key={index} />
           )
         )}
 

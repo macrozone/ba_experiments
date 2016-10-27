@@ -8,10 +8,28 @@ import ControlledCamera from '../containers/controlled_camera';
 import Axes from '../containers/axes';
 import Rays from '../containers/rays';
 
+// Scene is not a real class, so we do some other approach of inheritance:
 const superProjectPointerEvent = Scene.prototype.projectPointerEvent;
+const superBindOrbitControls = Scene.prototype.bindOrbitControls;
+Scene.prototype.bindOrbitControls = function (inst, canvas, props) {
+  superBindOrbitControls.call(this, inst, canvas, props);
+  if (this._THREEMetaData.orbitControls) {
+    this._THREEMetaData.orbitControls.addEventListener('change', () => {
+      this._THREEMetaData.orbitControlsIsChanging = true;
+    });
+    this._THREEMetaData.orbitControls.addEventListener('end', _.debounce(() => {
+      // wait a bit
+      this._THREEMetaData.orbitControlsIsChanging = false;
+    }), 300);
+  }
+};
 Scene.prototype.projectPointerEvent = function (event, eventName, canvas) {
+  if (this._THREEMetaData.orbitControlsIsChanging) {
+    return;
+  }
   superProjectPointerEvent.call(this, event, eventName, canvas);
-  const { raycaster } = this._THREEMetaData;
+  const { raycaster, orbitControls } = this._THREEMetaData;
+
   if (_.isFunction(this._currentElement.props.onClickRay)) {
     this._currentElement.props.onClickRay(event, raycaster.ray);
   }
@@ -122,6 +140,7 @@ const Pet3DViewer = class extends React.Component {
             pointerEvents={[ 'onClick' ]}
             onClickRay={_.debounce((event, ray) => {
               // is called twice :-/
+              // so debounce it.
               this.props.addRay(ray);
             }, 100)}
             >

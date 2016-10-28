@@ -11,7 +11,20 @@ export const composer = ({context}, onData) => {
     rays.push(ray);
     LocalState.set('pet_3_d_viewer.rays', rays);
   };
-  onData(null, {opacity, addRay});
+
+  const setRay = (ray) => {
+    LocalState.set('pet_3_d_viewer.ray', ray);
+  };
+
+  const setMarker = (marker) => {
+    LocalState.set('pet_3_d_viewer.marker', marker);
+  };
+
+  const setCamera = ({position, quaternion, rotation}) => {
+    LocalState.set('pet_3_d_viewer.camera', {position, quaternion, rotation});
+  };
+  const setMousePosition = (x,y) => LocalState.set('pet_3_d_viewer.mousePosition', {x,y});
+  onData(null, {setMousePosition, opacity, addRay, setMarker, setRay, setCamera});
 };
 
 export const depsMapper = (context, actions) => ({

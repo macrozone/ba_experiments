@@ -4,14 +4,11 @@ import THREE from 'three';
 
 export const composer = ({context}, onData) => {
   const {LocalState, Meteor} = context();
-  const [ posX, posY, posZ ] = LocalState.get('pet_3_d_viewer.cameraPosition');
-  const [ upX, upY, upZ ] = LocalState.get('pet_3_d_viewer.cameraUp');
-  const position = new THREE.Vector3(posX, posY, posZ);
-  const up = new THREE.Vector3(
-    upX, upY, upZ
-  );
+  const {position, rotation} = LocalState.get('pet_3_d_viewer.camera');
 
-  onData(null, {position, up});
+  onData(null, {
+    position,
+    rotation: new THREE.Euler(rotation._x, rotation._y, rotation._z)});
 };
 
 export const depsMapper = (context, actions) => ({

@@ -6,7 +6,7 @@ import Measure from 'react-measure';
 const OrbitControls = require('three-orbit-controls')(THREE);
 import ControlledCamera from '../containers/controlled_camera';
 import Axes from '../containers/axes';
-import Rays from '../containers/rays';
+import Markers from '../containers/markers';
 
 // Scene is not a real class, so we do some other approach of inheritance:
 const superProjectPointerEvent = Scene.prototype.projectPointerEvent;
@@ -16,6 +16,9 @@ Scene.prototype.bindOrbitControls = function (inst, canvas, props) {
   if (this._THREEMetaData.orbitControls) {
     this._THREEMetaData.orbitControls.addEventListener('change', () => {
       this._THREEMetaData.orbitControlsIsChanging = true;
+      if (_.isFunction(this._currentElement.props.onOrbit)) {
+        this._currentElement.props.onOrbit(this._THREEMetaData.camera);
+      }
     });
     this._THREEMetaData.orbitControls.addEventListener('end', _.debounce(() => {
       // wait a bit
@@ -28,10 +31,16 @@ Scene.prototype.projectPointerEvent = function (event, eventName, canvas) {
     return;
   }
   superProjectPointerEvent.call(this, event, eventName, canvas);
-  const { raycaster, orbitControls } = this._THREEMetaData;
-
-  if (_.isFunction(this._currentElement.props.onClickRay)) {
-    this._currentElement.props.onClickRay(event, raycaster.ray);
+  const { camera, raycaster, orbitControls } = this._THREEMetaData;
+  if (eventName === 'onClick') {
+    if (_.isFunction(this._currentElement.props.onClickRay)) {
+      this._currentElement.props.onClickRay(event, raycaster.ray);
+    }
+  }
+  if (eventName === 'onMouseMove') {
+    if (_.isFunction(this._currentElement.props.onMouseMoveRay)) {
+      this._currentElement.props.onMouseMoveRay(event, raycaster.ray);
+    }
   }
 };
 
@@ -117,7 +126,7 @@ const Pet3DViewer = class extends React.Component {
 
 
 
-
+    console.log('render');
 
     return (
       <Measure
@@ -133,26 +142,37 @@ const Pet3DViewer = class extends React.Component {
         >
 
           <Scene
+
             camera="maincamera"
             width={width}
             height={height}
             orbitControls={OrbitControls}
-            pointerEvents={[ 'onClick' ]}
+            pointerEvents={[ 'onClick', 'onMouseMove' ]}
+            onOrbit={(camera) => {
+              this.props.setCamera(camera);
+            }}
+            onMouseMoveRay={(event, ray) => {
+              // this.props.setRayMarkerPosition();
+              // console.log(ray.origin, ray.direction, 'mouseMove');
+              // console.log(event.clientX, event.clientY);
+
+              this.props.setRay(ray);
+              this.props.setMousePosition(event.clientX, event.clientY);
+            }}
             onClickRay={_.debounce((event, ray) => {
               // is called twice :-/
               // so debounce it.
-              this.props.addRay(ray);
+              this.props.setMarker({ray});
             }, 100)}
             >
             <Axes />
-            <Rays />
+            <Markers />
             <ControlledCamera
 
               name="maincamera"
               ref="camera"
               fov={75}
               target={new THREE.Vector3(0,0,0)}
-              lookat={new THREE.Vector3(0,0,0)}
               aspect={width / height}
               near={0.1}
               far={1000}

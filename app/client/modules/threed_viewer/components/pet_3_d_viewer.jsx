@@ -39,7 +39,11 @@ Scene.prototype.projectPointerEvent = function (event, eventName, canvas) {
   }
   if (eventName === 'onMouseMove') {
     if (_.isFunction(this._currentElement.props.onMouseMoveRay)) {
-      this._currentElement.props.onMouseMoveRay(event, raycaster.ray);
+      const rect = canvas.getBoundingClientRect();
+      const {clientX, clientY} = event.touches ? event.touches[0] : event;
+      const x = ( (clientX - rect.left) / rect.width) * 2 - 1;
+      const y = -( (clientY - rect.top) / rect.height) * 2 + 1;
+      this._currentElement.props.onMouseMoveRay(event, {x,y}, raycaster.ray);
     }
   }
 };
@@ -151,13 +155,13 @@ const Pet3DViewer = class extends React.Component {
             onOrbit={(camera) => {
               this.props.setCamera(camera);
             }}
-            onMouseMoveRay={(event, ray) => {
+            onMouseMoveRay={(event, mousePosition, ray) => {
               // this.props.setRayMarkerPosition();
               // console.log(ray.origin, ray.direction, 'mouseMove');
               // console.log(event.clientX, event.clientY);
 
               this.props.setRay(ray);
-              this.props.setMousePosition(event.clientX, event.clientY);
+              this.props.setMousePosition(mousePosition);
             }}
             onClickRay={_.debounce((event, ray) => {
               // is called twice :-/
@@ -166,7 +170,10 @@ const Pet3DViewer = class extends React.Component {
             }, 100)}
             >
             <Axes />
-            <Markers />
+            <Markers
+              width={width}
+              height={height}
+            />
             <ControlledCamera
 
               name="maincamera"

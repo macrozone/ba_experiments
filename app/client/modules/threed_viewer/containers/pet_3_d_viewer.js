@@ -23,7 +23,7 @@ export const composer = ({context}, onData) => {
   const setCamera = ({position, quaternion, rotation}) => {
     LocalState.set('pet_3_d_viewer.camera', {position, quaternion, rotation});
   };
-  const setMousePosition = (x,y) => LocalState.set('pet_3_d_viewer.mousePosition', {x,y});
+  const setMousePosition = (pos) => LocalState.set('pet_3_d_viewer.mousePosition', pos);
   onData(null, {setMousePosition, opacity, addRay, setMarker, setRay, setCamera});
 };
 

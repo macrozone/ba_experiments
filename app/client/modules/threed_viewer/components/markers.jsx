@@ -4,7 +4,7 @@ import THREE from 'three';
 
 const Point = ({position}) => {
 
-  const geometry = new THREE.SphereBufferGeometry( 2, 16, 16 );
+  const geometry = new THREE.SphereBufferGeometry( 1, 8, 8 );
   const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
 
   return (
@@ -58,13 +58,15 @@ export const Ray = ({direction, origin}) => {
   );
 };
 
-const Marker = ({camera, marker, mousePosition, ray}) => {
+const Marker = ({width, height, camera, marker, mousePosition, ray}) => {
 
   // const n = new THREE.Vector3();
   // const up = new THREE.Vector3(0,1,0);
   const right = new THREE.Vector3(1,0,0);
   // n.crossVectors(ray.direction, up);
-  const d = new THREE.Ray().copy(ray).distanceToPoint(new THREE.Vector3(0,0,0));
+  // const sign = mousePosition.x > 0 ? -1 : 1;
+  // const d = sign * new THREE.Ray().copy(ray).distanceToPoint(new THREE.Vector3(0,0,0));
+  const d = -mousePosition.x * 75;
   const n = right.applyQuaternion(new THREE.Quaternion(
     camera.quaternion._x, camera.quaternion._y, camera.quaternion._z, camera.quaternion._w
   ));
@@ -95,7 +97,7 @@ const Plane = ({direction, origin}) => {
     </Object3D>
   );
 };
-const Markers = ({mousePosition, ray, camera, markers}) => {
+const Markers = ({width, height, mousePosition, ray, camera, markers}) => {
 
 
   return (
@@ -106,6 +108,8 @@ const Markers = ({mousePosition, ray, camera, markers}) => {
         <Marker
         mousePosition={mousePosition}
         marker={marker}
+        width={width}
+        height={height}
         camera={camera}
         ray={ray}
         key={index}

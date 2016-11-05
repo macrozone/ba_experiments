@@ -3,21 +3,22 @@ import withTheme from '/manul-utils/with_theme';
 import Slider from '/client/modules/core/containers/slider';
 import SelectAxis from '../containers/select_axis';
 import ToggleAxesButton from '../containers/toggle_axes_button';
-
+import CaseSelect from '/client/modules/core/containers/case_select';
 const Styles = ({style, ...props}, theme) => {
   return {
     base: [
       {
-
+        color: 'black'
       },
       style // allow override
     ]
   };
 };
 
-const Component = ({styles}) => {
+const Component = ({styles, setCase}) => {
   return (
     <div style={styles.base}>
+      <CaseSelect onChange={setCase}/>
       <Slider
         label="opacity"
         max={1}

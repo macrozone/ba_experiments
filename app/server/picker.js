@@ -26,7 +26,7 @@ Picker.route('/asset/:path*', function (params, req, res) {
 });
 
 
-Picker.route('/buffer/:path*', function (params, req, res) {
+Picker.route('/buffers/:path*', function (params, req, res) {
   const fullPath = bufferPath + '/' + params.path;
   fs.exists(fullPath, function (exists) {
     if (!exists) {

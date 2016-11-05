@@ -21,7 +21,7 @@ export const depsMapper = (context, actions) => ({
   setFrontal: () => {
     context.LocalState.set(
       'pet_3_d_viewer.camera', {
-        position: {x: 0, y: 0, z: 100},
+        position: {x: 0, y: 0, z: 450},
         rotation: {_x: 0, _y: 0, _z: 0}
       }
     );
@@ -29,7 +29,7 @@ export const depsMapper = (context, actions) => ({
   setSagittal: () => {
     context.LocalState.set(
       'pet_3_d_viewer.camera', {
-        position: {x: -100, y: 0, z: 0},
+        position: {x: -450, y: 0, z: 0},
         rotation: {_x: 0, _y: -Math.PI / 2, _z: 0}
       }
     );
@@ -37,7 +37,7 @@ export const depsMapper = (context, actions) => ({
   setTransversal: () => {
     context.LocalState.set(
       'pet_3_d_viewer.camera', {
-        position: {x: 0, y: 100, z: 0},
+        position: {x: 0, y: 450, z: 0},
         rotation: {_x: -Math.PI / 2, _y: 0, _z: 0}
       }
     );

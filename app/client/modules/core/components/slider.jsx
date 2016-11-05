@@ -10,7 +10,10 @@ const Styles = ({style, ...props}, theme) => {
 
       },
       style // allow override
-    ]
+    ],
+    label: {
+      color: 'white'
+    }
   };
 };
 
@@ -18,7 +21,7 @@ const Styles = ({style, ...props}, theme) => {
 const Component = ({styles, debounce, step, min, max, label, value, setValue}) => {
   return (
     <div style={styles.base}>
-      <p>{label}</p>
+      <p style={styles.label}>{label}</p>
       <ReactBootstrapSlider
         step={step}
         min={min}

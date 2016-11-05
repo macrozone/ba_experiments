@@ -16,7 +16,7 @@ const PointCloudModel = class extends React.Component {
   }
   componentDidMount() {
     var oReq = new XMLHttpRequest();
-    const url = '/buffer/24636786_i5_396_200_200.buf';
+    const url = this.props.currentCase.data;
     oReq.open('GET', url, true);
     oReq.responseType = 'arraybuffer';
 
@@ -32,11 +32,7 @@ const PointCloudModel = class extends React.Component {
   }
 
   render() {
-
-    const width = 200;
-    const height = 200;
-    const depth = 396;
-
+    const {width,height,depth} = this.props.currentCase;
     const numberOfClusters = 256;
     const {maxSuv, minSuv, opacity, pointSize} = this.props;
 

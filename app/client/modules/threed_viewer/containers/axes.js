@@ -1,18 +1,17 @@
 import {useDeps, composeAll, composeWithTracker, compose} from 'mantra-core';
-import OpacitySlider from '../components/opacity_slider.jsx';
+import Axes from '../components/axes.jsx';
 
-export const composer = ({context, localState}, onData) => {
+export const composer = ({context}, onData) => {
   const {Meteor, LocalState} = context();
-  const value = LocalState.get(localState);
-  onData(null, {value});
+  const showAxes = LocalState.get('pet_3_d_viewer.showAxes');
+  onData(null, {showAxes});
 };
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
-  setOpacity: actions.segmentation.setOpacity
 });
 
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(OpacitySlider);
+)(Axes);

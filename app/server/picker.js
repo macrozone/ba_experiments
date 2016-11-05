@@ -1,6 +1,8 @@
 import fs from 'fs';
 import {Picker} from 'meteor/meteorhacks:picker';
 import mime from 'mime-types';
+var zlib = require('zlib');
+
 const {assetPath, bufferPath} = Meteor.settings;
 
 Picker.route('/asset/:path*', function (params, req, res) {
@@ -34,8 +36,12 @@ Picker.route('/buffer/:path*', function (params, req, res) {
       res.end('404 Not Found');
       return;
     }
-    res.writeHead(200, {'Content-Type': 'application/octet-stream' });
+    res.writeHead(200, {
+      'Content-Type': 'application/octet-stream',
+
+    });
    // stream the file
+
     fs.createReadStream(fullPath).pipe(res);
   });
 

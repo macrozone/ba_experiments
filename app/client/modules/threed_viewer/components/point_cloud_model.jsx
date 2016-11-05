@@ -16,7 +16,7 @@ const PointCloudModel = class extends React.Component {
   }
   componentDidMount() {
     var oReq = new XMLHttpRequest();
-    const url = '/buffer/5940_i2_275_128_128.buf';
+    const url = '/buffer/24636786_i5_396_200_200.buf';
     oReq.open('GET', url, true);
     oReq.responseType = 'arraybuffer';
 
@@ -33,57 +33,48 @@ const PointCloudModel = class extends React.Component {
 
   render() {
 
+    const width = 200;
+    const height = 200;
+    const depth = 396;
 
-    const width = 128;
-    const height = 128;
-    const depth = 275;
     const numberOfClusters = 256;
-    const maxSuv = 0.01;
-    const minSuv = 0.0001;
+    const {maxSuv, minSuv, opacity, pointSize} = this.props;
+
+    const suvRange = maxSuv - minSuv;
 
     const clusters = [ ...Array(numberOfClusters) ].map((__, index) => ({
       geometry: new THREE.Geometry(),
       material: new THREE.PointsMaterial({
-        opacity: this.props.opacity,
+        opacity,
         transparent: true,
-        size: 0.1,
+        size: pointSize,
         color: new THREE.Color(`hsl(${Math.round(index / numberOfClusters * 256)}, 100%, 50%)`)
       })
     }));
 
 
     // get value between 0 and 1 in the suv-window
-    const getNormalized = suv => (suv - minSuv) / (maxSuv - minSuv);
+    const getNormalized = suv => (suv - minSuv) / suvRange;
 
     // get cluster index (can be outside of range)
     const getClusterIndex = suv => Math.floor(getNormalized(suv) * numberOfClusters);
 
-    let highestSuv = 0;
+
     if (this.state.data) {
       for (let i = 0; i < this.state.data.byteLength; i++) {
-        const value = this.state.data[i]; // some are undefined, TODO: find out why
-        highestSuv = Math.max(maxSuv, value);
-        const clusterIndex = getClusterIndex(value);
-
-
-        if (clusters[clusterIndex]) {
-
+        const value = this.state.data[i] || 0.0; // some are undefined, TODO: find out why
+        if (value >= minSuv && value < maxSuv) {
+          const clusterIndex = getClusterIndex(value);
           const x = i % width;
           const z = Math.floor(i / width) % height;
-          const y = Math.floor(i / (width * height));
-          const vertex = new THREE.Vector3();
-                  // console.log(x,y,z);
-          vertex.x = x;
-          vertex.y = y;
-          vertex.z = z;
-          clusters[clusterIndex].geometry.vertices.push(vertex);
+          const y = -Math.floor(i / (width * height)); // is swapped
+          clusters[clusterIndex].geometry.vertices.push({x,y,z});
         }
-
       }
     }
-    console.log({highestSuv});
+
     return <Object3D
-      position={new THREE.Vector3(-width / 2, -depth / 2, -height / 2)}
+      position={new THREE.Vector3(-width / 2, depth / 2, -height / 2)}
     >
     {
       clusters.map(({material, geometry}, index) => (

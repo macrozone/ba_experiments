@@ -3,6 +3,7 @@ import withTheme from '/manul-utils/with_theme';
 import Slider from '/client/modules/core/containers/slider';
 import SelectAxis from '../containers/select_axis';
 import ToggleAxesButton from '../containers/toggle_axes_button';
+
 const Styles = ({style, ...props}, theme) => {
   return {
     base: [
@@ -25,6 +26,30 @@ const Component = ({styles}) => {
         localState="pet_3_d_viewer.opacity"
         debounce={300}
         />
+      <Slider
+        label="minSuv"
+        max={0.01}
+        min={0.0001}
+        step={0.0001}
+        localState="pet_3_d_viewer.min_suv"
+        debounce={300}
+        />
+      <Slider
+        label="maxSuv"
+        max={0.01}
+        min={0.0001}
+        step={0.0001}
+        localState="pet_3_d_viewer.max_suv"
+        debounce={300}
+        />
+        <Slider
+          label="Point size"
+          max={2}
+          min={0.01}
+          step={0.1}
+          localState="pet_3_d_viewer.point_size"
+          debounce={300}
+          />
       <SelectAxis />
       <ToggleAxesButton />
     </div>

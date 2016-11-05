@@ -7,6 +7,11 @@ export default {
   actions,
   load({LocalState}) {
     LocalState.set('pet_3_d_viewer.opacity', 0.5);
+
+    LocalState.set('pet_3_d_viewer.min_suv', 0.0001);
+    LocalState.set('pet_3_d_viewer.max_suv', 0.01);
+    LocalState.set('pet_3_d_viewer.point_size', 1);
+
     LocalState.set('pet_3_d_viewer.cameraPosition', [ 0,0,100 ]);
     LocalState.set('pet_3_d_viewer.camera', {
       position: {x: 0, y: 0,z: 100},

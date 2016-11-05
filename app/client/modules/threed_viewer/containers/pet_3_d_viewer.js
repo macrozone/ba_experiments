@@ -5,6 +5,9 @@ export const composer = ({context}, onData) => {
   const {Meteor, LocalState} = context();
   const opacity = LocalState.get('pet_3_d_viewer.opacity');
 
+  const minSuv = LocalState.get('pet_3_d_viewer.min_suv');
+  const maxSuv = LocalState.get('pet_3_d_viewer.max_suv');
+
   const addRay = (ray) => {
 
     const rays = LocalState.get('pet_3_d_viewer.rays') || [];
@@ -24,7 +27,7 @@ export const composer = ({context}, onData) => {
     LocalState.set('pet_3_d_viewer.camera', {position, quaternion, rotation});
   };
   const setMousePosition = (pos) => LocalState.set('pet_3_d_viewer.mousePosition', pos);
-  onData(null, {setMousePosition, opacity, addRay, setMarker, setRay, setCamera});
+  onData(null, {setMousePosition, opacity, minSuv, maxSuv, addRay, setMarker, setRay, setCamera});
 };
 
 export const depsMapper = (context, actions) => ({

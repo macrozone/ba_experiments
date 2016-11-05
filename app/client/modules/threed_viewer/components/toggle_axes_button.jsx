@@ -1,5 +1,6 @@
 import React from 'react';
 import withTheme from '/manul-utils/with_theme';
+import {Button, ButtonGroup, ProgressBar} from 'react-bootstrap';
 
 const Styles = ({style, ...props}, theme) => {
   return {
@@ -14,7 +15,7 @@ const Styles = ({style, ...props}, theme) => {
 
 const Component = ({styles, showAxes, toggleAxes}) => {
   return (
-    <button onClick={toggleAxes}>{showAxes ? 'hide axes' : 'show axes'}</button>
+    <Button onClick={toggleAxes}>{showAxes ? 'hide axes' : 'show axes'}</Button>
   );
 };
 

@@ -8,7 +8,7 @@ import ControlledCamera from '../containers/controlled_camera';
 import Axes from '../containers/axes';
 import Markers from '../containers/markers';
 
-import PointCloudModel from './point_cloud_model';
+import PointCloudModel from '../containers/point_cloud_model';
 
 // Scene is not a real class, so we do some other approach of inheritance:
 const superProjectPointerEvent = Scene.prototype.projectPointerEvent;
@@ -123,16 +123,7 @@ const Pet3DViewer = class extends React.Component {
 
   render() {
 
-    const opacity = this.props.opacity;
     const {width, height} = this.state.dimensions;
-    const slices = {
-      y: _.range(0, 395),
-      x: _.range(0, 200)
-    };
-
-
-
-
 
     return (
       <Measure
@@ -186,8 +177,7 @@ const Pet3DViewer = class extends React.Component {
               near={0.1}
               far={1000}
             />
-            <PointCloudModel opacity={opacity}/>
-
+            <PointCloudModel />
 
 
           </Scene>

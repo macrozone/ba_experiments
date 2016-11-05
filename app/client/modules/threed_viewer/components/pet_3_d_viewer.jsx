@@ -1,5 +1,5 @@
 import React from 'react';
-import {Renderer, Scene, Mesh, Line, Object3D} from 'react-three';
+import {Renderer, Scene, Mesh, Line, Object3D, PointCloud} from 'react-three';
 import _ from 'lodash';
 import THREE from 'three';
 import Measure from 'react-measure';
@@ -7,6 +7,8 @@ const OrbitControls = require('three-orbit-controls')(THREE);
 import ControlledCamera from '../containers/controlled_camera';
 import Axes from '../containers/axes';
 import Markers from '../containers/markers';
+
+import PointCloudModel from './point_cloud_model';
 
 // Scene is not a real class, so we do some other approach of inheritance:
 const superProjectPointerEvent = Scene.prototype.projectPointerEvent;
@@ -130,7 +132,7 @@ const Pet3DViewer = class extends React.Component {
 
 
 
-    console.log('render');
+
 
     return (
       <Measure
@@ -184,16 +186,10 @@ const Pet3DViewer = class extends React.Component {
               near={0.1}
               far={1000}
             />
-            {slices.x.map(
-              index => (
-                <Slice axis="x" opacity={opacity} index={index} key={index} />
-              )
-            )}
-            {slices.y.map(
-              index => (
-                <Slice axis="y" opacity={opacity} index={index} key={index} />
-              )
-            )}
+            <PointCloudModel opacity={opacity}/>
+
+
+
           </Scene>
         </Renderer>
         </div>

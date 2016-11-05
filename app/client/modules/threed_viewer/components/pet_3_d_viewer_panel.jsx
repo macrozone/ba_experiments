@@ -19,7 +19,7 @@ const Component = ({styles}) => {
     <div style={styles.base}>
       <Slider
         label="opacity"
-        max={0.3}
+        max={1}
         min={0.01}
         step={0.01}
         localState="pet_3_d_viewer.opacity"

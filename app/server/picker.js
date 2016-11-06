@@ -3,7 +3,7 @@ import {Picker} from 'meteor/meteorhacks:picker';
 import mime from 'mime-types';
 var zlib = require('zlib');
 
-const {assetPath, bufferPath} = Meteor.settings;
+const {assetPath} = Meteor.settings;
 
 Picker.route('/asset/:path*', function (params, req, res) {
   const fullPath = assetPath + '/' + params.path;
@@ -27,7 +27,7 @@ Picker.route('/asset/:path*', function (params, req, res) {
 
 
 Picker.route('/buffers/:path*', function (params, req, res) {
-  const fullPath = bufferPath + '/' + params.path;
+  const fullPath = assetPath + '/buffers/' + params.path;
   fs.exists(fullPath, function (exists) {
     if (!exists) {
       // 404 missing files

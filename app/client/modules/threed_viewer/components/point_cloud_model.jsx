@@ -3,8 +3,9 @@ import {Renderer, Scene, Mesh, Line, Object3D, PointCloud} from 'react-three';
 import _ from 'lodash';
 import THREE from 'three';
 
+import pet from '/lib/palettes/pet';
 
-
+const Y_SCALE = 0.5; // data is scaled in this direction // TODO: find correct value
 
 const PointCloudModel = class extends React.Component {
   constructor() {
@@ -34,7 +35,7 @@ const PointCloudModel = class extends React.Component {
   render() {
     const {width,height,depth} = this.props.currentCase;
     const numberOfClusters = 256;
-    const {maxSuv, minSuv, opacity, pointSize} = this.props;
+    const {maxSuv, minSuv, opacity, pointSize, blending} = this.props;
 
     const suvRange = maxSuv - minSuv;
 
@@ -42,9 +43,12 @@ const PointCloudModel = class extends React.Component {
       geometry: new THREE.Geometry(),
       material: new THREE.PointsMaterial({
         opacity,
+        blending: THREE[blending],
         transparent: true,
         size: pointSize,
-        color: new THREE.Color(`hsl(${Math.round(index / numberOfClusters * 256)}, 100%, 50%)`)
+        alphaTest: 0.1,
+        depthTest: false,
+        color: new THREE.Color(`rgb(${pet[index][0]},${pet[index][1]},${pet[index][2]})`)
       })
     }));
 
@@ -63,14 +67,14 @@ const PointCloudModel = class extends React.Component {
           const clusterIndex = getClusterIndex(value);
           const x = i % width;
           const z = Math.floor(i / width) % height;
-          const y = -Math.floor(i / (width * height)); // is swapped
+          const y = -Math.floor(i / (width * height)) * Y_SCALE; // is swapped
           clusters[clusterIndex].geometry.vertices.push({x,y,z});
         }
       }
     }
 
     return <Object3D
-      position={new THREE.Vector3(-width / 2, depth / 2, -height / 2)}
+      position={new THREE.Vector3(-width / 2, depth * Y_SCALE / 2, -height / 2)}
     >
     {
       clusters.map(({material, geometry}, index) => (

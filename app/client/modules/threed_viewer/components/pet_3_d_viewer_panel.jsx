@@ -4,6 +4,8 @@ import Slider from '/client/modules/core/containers/slider';
 import SelectAxis from '../containers/select_axis';
 import ToggleAxesButton from '../containers/toggle_axes_button';
 import CaseSelect from '/client/modules/core/containers/case_select';
+import SelectState from '/client/modules/core/containers/select_state';
+
 const Styles = ({style, ...props}, theme) => {
   return {
     base: [
@@ -30,27 +32,37 @@ const Component = ({styles, setCase}) => {
       <Slider
         label="minSuv"
         max={0.01}
-        min={0.0001}
-        step={0.0001}
+        min={0.00001}
+        step={0.00001}
         localState="pet_3_d_viewer.min_suv"
         debounce={300}
         />
       <Slider
         label="maxSuv"
         max={0.01}
-        min={0.0001}
-        step={0.0001}
+        min={0.00001}
+        step={0.00001}
         localState="pet_3_d_viewer.max_suv"
         debounce={300}
         />
-        <Slider
-          label="Point size"
-          max={2}
-          min={0.01}
-          step={0.1}
-          localState="pet_3_d_viewer.point_size"
-          debounce={300}
-          />
+      <Slider
+        label="Point size"
+        max={2}
+        min={0.01}
+        step={0.1}
+        localState="pet_3_d_viewer.point_size"
+        debounce={300}
+        />
+      <SelectState
+        label="Blending"
+        localState="pet_3_d_viewer.blending"
+        options={[
+          {value: 'NoBlending', label: 'NoBlending'},
+          {value: 'NormalBlending', label: 'NormalBlending'},
+          {value: 'AdditiveBlending', label: 'AdditiveBlending'},
+          {value: 'SubtractiveBlending', label: 'SubtractiveBlending'},
+          {value: 'MultiplyBlending', label: 'MultiplyBlending'}
+        ]} />
       <SelectAxis />
       <ToggleAxesButton />
     </div>

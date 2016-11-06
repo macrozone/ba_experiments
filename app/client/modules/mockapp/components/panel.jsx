@@ -5,6 +5,8 @@ import Progress from '../containers/progress';
 import AnnotationToolBar from '/client/modules/annotations/containers/toolbar';
 import {Button, ButtonGroup, ProgressBar} from 'react-bootstrap';
 import SegmentationOptions from '/client/modules/segmentation/containers/options';
+
+
 const Styles = ({style, ...props}, theme) => {
   return {
     base: [

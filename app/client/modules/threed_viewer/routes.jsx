@@ -8,12 +8,12 @@ import Pet3dViewerPanel from './containers/pet_3_d_viewer_panel';
 
 export default function (injectDeps, {FlowRouter}) {
   const AppLayoutCtx = injectDeps(AppLayout);
-  FlowRouter.route('/pet3dviewer', {
+  FlowRouter.route('/pet3dviewer/:caseId?', {
     name: 'pet3dviewer',
-    action() {
+    action({caseId}) {
       mount(AppLayoutCtx, {
-        main: () => (<Pet3dViewer />),
-        panel: () => (<Pet3dViewerPanel />)
+        main: () => (<Pet3dViewer caseId={caseId}/>),
+        panel: () => (<Pet3dViewerPanel caseId={caseId}/>)
       });
     }
   });

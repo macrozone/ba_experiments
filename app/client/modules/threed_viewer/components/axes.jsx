@@ -3,7 +3,7 @@ import {Renderer, Scene, Mesh, Line, Object3D} from 'react-three';
 import THREE from 'three';
 
 export const Axis = ({from, to, color}) => {
-  const material = new THREE.LineBasicMaterial({color});
+  const material = new THREE.LineBasicMaterial({color, transparent: true, depthTest: false});
   const geometry = new THREE.Geometry();
   geometry.vertices.push(
     new THREE.Vector3( ...from),

@@ -4,15 +4,30 @@ import THREE from 'three';
 
 const Point = ({position}) => {
 
-  const geometry = new THREE.SphereBufferGeometry( 1, 8, 8 );
-  const material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+  const geometry = new THREE.SphereBufferGeometry( 4, 8, 8 );
+
 
   return (
-    <Mesh
-      position={position}
-      geometry={geometry}
-      material={material}
-    />
+    <Object3D position={position}>
+      <Mesh
+        geometry={new THREE.SphereBufferGeometry( 8, 32, 32 )}
+        material={new THREE.MeshBasicMaterial({
+          color: 0xffff00,
+          opacity: 0.4,
+          transparent: true,
+          depthTest: false,
+        })}
+      />
+      <Mesh
+        geometry={new THREE.SphereBufferGeometry( 1, 32, 32 )}
+        material={new THREE.MeshBasicMaterial({
+          color: 0xff0000,
+          opacity: 0.8,
+          transparent: true,
+          depthTest: false,
+        })}
+      />
+    </Object3D>
   );
 };
 
@@ -43,34 +58,65 @@ DIRECTIONAL_LINE_GEOMETRY.addAttribute( 'position', new THREE.Float32Attribute( 
 export const Ray = ({direction, origin}) => {
   const rotation = directionToRotation(direction);
 
-
-
-  const material = new THREE.LineBasicMaterial({color: 0xff0000});
+  const material = new THREE.LineBasicMaterial({
+    color: 0xff0000,
+    transparent: true,
+    depthTest: false,
+    blending: THREE.AdditiveBlending
+  });
 
   return (
     <Line
-    geometry={DIRECTIONAL_LINE_GEOMETRY}
-    scale={new THREE.Vector3(1000,1000,1000)}
-    material={material}
-    position={origin}
-    rotation={rotation}
+      geometry={DIRECTIONAL_LINE_GEOMETRY}
+      scale={new THREE.Vector3(1000,1000,1000)}
+      material={material}
+      position={origin}
+      rotation={rotation}
     />
   );
 };
 
-const Marker = ({width, height, camera, marker, mousePosition, ray}) => {
+const Marker = ({camera, marker, ray}) => {
+  // we want to show a marker on the line where the mouse-cursor is.
+  // The user does not need to point directly on the line,
+  // instead the mouse cursor can be below or above the line and we want to show
+  // the cursor on this vertical line.
 
-  // const n = new THREE.Vector3();
-  // const up = new THREE.Vector3(0,1,0);
-  const right = new THREE.Vector3(1,0,0);
-  // n.crossVectors(ray.direction, up);
-  // const sign = mousePosition.x > 0 ? -1 : 1;
-  // const d = sign * new THREE.Ray().copy(ray).distanceToPoint(new THREE.Vector3(0,0,0));
-  const d = -mousePosition.x * 75;
-  const n = right.applyQuaternion(new THREE.Quaternion(
+  // in order to do so, we need a plane that we can intersect with the already drawn line
+  // this plane needs to fulfill these reqirements:
+  // - is parallel to "camera-up".
+  // - contains the current ray from the raycaster (point from camera to mouse-cursor)
+
+  // to construct this plane we need the hessian normal form it
+
+  // the hessian normal form needs a (oriented and normed) normal-vector n0 and
+  // a distance d of the plane to the origin of the coordinate system
+
+  // to start with, we need a normal vector n of this plane and a support-vector p
+  // p is simply the ray's origin
+  const p = new THREE.Vector3(ray.origin.x, ray.origin.y, ray.origin.z);
+
+  // n needs to be normal to the resulting plane. Because the plane needs to contain the ray,
+  // n needs to be normal to this ray as well, but n needs also to be normal to camera-up.
+  // this can be calculate with the cross-product of the ray-direction with camera-up:
+
+  const up = new THREE.Vector3(0,1,0);
+  const cameraUp = up.applyQuaternion(new THREE.Quaternion(
     camera.quaternion._x, camera.quaternion._y, camera.quaternion._z, camera.quaternion._w
   ));
-  const plane = new THREE.Plane(n, d);
+  const n = cameraUp.cross(ray.direction);
+
+  // we need to norm it:
+  const dotProduct = p.dot(n);
+
+  const n0 = dotProduct > 0 ? n.normalize() : n.normalize().negate();
+
+  // d is now dot product of p and n0
+  const d = -p.dot(n0);
+
+  // no we got our plane
+  const plane = new THREE.Plane(n0, d);
+  // and the intersection
   const intersection = new THREE.Ray().copy(marker.ray).intersectPlane(plane);
 
   return <Object3D>
@@ -81,24 +127,7 @@ const Marker = ({width, height, camera, marker, mousePosition, ray}) => {
 };
 
 
-const Plane = ({direction, origin}) => {
-  const planeGeometry = new THREE.PlaneGeometry(1000, 1000 );
-  const material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
-  const rotation = directionToRotation(direction);
-  return (
-    <Object3D>
-      <Ray direction={direction} origin={{...origin, y: origin.y - 1}}/>
-      <Mesh
-        geometry={planeGeometry}
-        material={material}
-        position={origin}
-        rotation={rotation}
-      />
-    </Object3D>
-  );
-};
-const Markers = ({width, height, mousePosition, ray, camera, markers}) => {
-
+const Markers = ({width, height, ray, camera, markers}) => {
 
   return (
     <Object3D>
@@ -106,7 +135,6 @@ const Markers = ({width, height, mousePosition, ray, camera, markers}) => {
     {
       markers.map((marker, index) => (
         <Marker
-        mousePosition={mousePosition}
         marker={marker}
         width={width}
         height={height}

@@ -21,7 +21,6 @@ export const depsMapper = (context, actions) => ({
   setRay: actions.threedViewer.setRay,
   setMarker: actions.threedViewer.setMarker,
   setCamera: actions.threedViewer.setCamera,
-  setMousePosition: actions.threedViewer.setMousePosition
 
 });
 

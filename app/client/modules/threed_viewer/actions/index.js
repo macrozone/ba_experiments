@@ -18,9 +18,6 @@ export default {
 
     setCamera({LocalState}, {position, quaternion, rotation}) {
       LocalState.set('pet_3_d_viewer.camera', {position, quaternion, rotation});
-    },
-    setMousePosition({LocalState}, pos) {
-      LocalState.set('pet_3_d_viewer.mousePosition', pos);
     }
   }
 };

@@ -6,11 +6,10 @@ export const composer = ({context}, onData) => {
 
   const marker = LocalState.get('pet_3_d_viewer.marker');
 
-  const mousePosition = LocalState.get('pet_3_d_viewer.mousePosition');
   const camera = LocalState.get('pet_3_d_viewer.camera');
   const ray = LocalState.get('pet_3_d_viewer.ray');
   const markers = marker ? [ marker ] : [];
-  onData(null, {mousePosition, camera, ray, markers});
+  onData(null, {camera, ray, markers});
 };
 
 export const depsMapper = (context, actions) => ({

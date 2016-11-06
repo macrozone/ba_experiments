@@ -1,7 +1,9 @@
 import React from 'react';
 import withTheme from '/manul-utils/with_theme';
-import {Layer, Line, Circle, Rect, Stage, Group} from 'react-konva';
+import {Layer, Line, Circle, Rect, Stage, Group, Image} from 'react-konva';
 import Color from 'color';
+import Annotations from '/client/modules/annotations/containers/annotations';
+import SegmentationImage from '/client/modules/segmentation/containers/segmentation_image';
 const Styles = ({style, altKey}, theme) => {
   return {
     base: [
@@ -23,38 +25,28 @@ const Styles = ({style, altKey}, theme) => {
   };
 };
 
-const Component = ({styles, altKey, deleteRoi, showRois, image, rois, currentRoiId, startNewRoi, stopCurrentRoi, draw}) => {
-  const width = 800;
-  const height = 600;
-
+const Component = ({styles, showAnnotations, width, height,image, segmentation, cursorPosition}) => {
 
   return (
     <div
-
-      style={styles.base}
-      onMouseMove={
-        (e) => currentRoiId ? draw(currentRoiId, e.nativeEvent.offsetX, e.nativeEvent.offsetY) : null}
-      onMouseDown={startNewRoi}
-      onMouseUp={stopCurrentRoi}>
+      style={{...styles.base, width, height}}
+      >
       <Stage style={styles.canvas} width={width} height={height} >
         <Layer>
-          {showRois ? rois.map(({_id, points, color}, index) => {
-            const colorInstance = Color(color);
-            return (
-              <Line
-                key={index}
-                points={points}
-                onClick={() => altKey ? deleteRoi(_id) : null}
-                stroke={colorInstance.clearer(0.2).rgbString()}
-                fill={colorInstance.clearer(altKey ? 0.5 : 0.8).rgbString()}
-                closed tension={0} />
-              );
-          }
-        ) : null}
+          <Image image={image} />
+        </Layer>
+        <Layer>
+          <SegmentationImage segmentation={segmentation} />
 
         </Layer>
+        <Layer>
+          { showAnnotations ?
+            <Annotations width={width} height={height} cursorPosition={cursorPosition} segmentation={segmentation}/> :
+            null}
+        </Layer>
+
      </Stage>
-      <img style={styles.image} width={width} height={height} src={image} />
+
     </div>
   );
 };

@@ -5,7 +5,7 @@ export default {
   routes,
   actions,
   load({LocalState}, actions) {
-    actions.mockapp.nextSample();
+    actions.mockapp.setCTSample();
     LocalState.set('samplesDone', 0);
 
   }

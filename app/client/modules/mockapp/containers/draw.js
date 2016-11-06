@@ -1,18 +1,88 @@
 import {useDeps, composeAll, composeWithTracker, compose} from 'mantra-core';
 import Draw from '../components/draw.jsx';
-import {withState} from 'recompose';
-import _ from 'lodash';
-export const composer = ({context}, onData) => {
-  const {LocalState, LocalCollections: {Rois}} = context();
-//  const drawingPoints = _.chain(DrawingPoints.find().fetch()).map(({x,y}) => [ x,y ]).flatten()
-//  .value();
-  const currentRoiId = LocalState.get('mockapp.currentRoiId');
-  const rois = Rois.find().fetch();
-  const showRois = LocalState.get('mockapp.showRois');
-  const image = LocalState.get('mockapp.currentImage');
+import withMousePosition from '../../core/hocs/with_mouse_position';
+import withCurrentImage from '../../core/hocs/with_current_image';
+import Segmentation from '/lib/image/segmentation';
 
-  onData(null, {image, showRois, currentRoiId, rois});
+export const composer = ({context}, onData) => {
+  const {LocalState} = context();
+  const showAnnotations = LocalState.get('annotations.showAnnotations');
+  const currentToolId = LocalState.get('annotations.currentToolId');
+
+  onData(null, {showAnnotations, currentToolId});
 };
+
+export const imageComposer = ({context}, onData) => {
+  const {LocalState} = context();
+  const imageUrl = LocalState.get('mockapp.currentImage');
+
+  const image = new Image();
+  image.src = imageUrl;
+  image.setAttribute('crossOrigin', '');
+  image.onload = () => {
+
+    onData(null, {image, width: image.width, height: image.height});
+  };
+
+};
+
+export const segmentationComposer = ({context, image}, onData) => {
+  const {LocalState} = context();
+  const regionSize = LocalState.get('segmentation.regionSize');
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = image.width;
+  canvas.height = image.height;
+  ctx.drawImage(image, 0, 0 );
+  const imageData = ctx.getImageData(0, 0, image.width, image.height);
+
+  const segmentation = Segmentation.create(imageData, {method: 'slic', regionSize});
+  ctx.putImageData(segmentation.result,0,0);
+
+
+  function _getEncodedLabel(array, offset) {
+    return array[offset] |
+           (array[offset + 1] << 8) |
+           (array[offset + 2] << 16);
+  }
+
+  const createLabelMap = function () {
+    const map = new Map();
+    const data = segmentation.result.data;
+    for (let i = 0; i < data.length; i += 4) {
+      const label = _getEncodedLabel(data, i);
+      if (!map.has(label)) {
+        map.set(label, {label, pixels: []});
+      }
+      map.get(label).pixels.push(i);
+    }
+    return map;
+  };
+
+  const labelMap = createLabelMap();
+
+  const _getClickOffset = (x,y) => {
+    return 4 * (y * image.width + x);
+  };
+
+  const getLabelForClick = (x,y) => {
+    const label = _getEncodedLabel(segmentation.result.data, _getClickOffset(x,y));
+    return labelMap.get(label);
+  };
+
+
+
+  onData(null, { segmentation: {
+    ...segmentation,
+    canvas,
+    getLabelForClick
+  }});
+
+};
+
+
+
+
 
 export const keyComposer = ({context}, onData) => {
   const {Keypress} = context();
@@ -22,14 +92,12 @@ export const keyComposer = ({context}, onData) => {
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
-  draw: _.throttle(actions.mockapp.draw, 16),
-  startNewRoi: actions.mockapp.startNewRoi,
-  deleteRoi: actions.mockapp.deleteRoi,
-  stopCurrentRoi: actions.mockapp.stopCurrentRoi
 });
 export default composeAll(
+  withMousePosition(),
   composeWithTracker(keyComposer),
   composeWithTracker(composer),
-  withState('isDrawing', 'setDrawing', false),
+  composeWithTracker(segmentationComposer),
+  withCurrentImage(),
   useDeps(depsMapper)
 )(Draw);

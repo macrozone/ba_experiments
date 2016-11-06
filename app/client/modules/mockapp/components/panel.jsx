@@ -2,7 +2,9 @@ import React from 'react';
 import withTheme from '/manul-utils/with_theme';
 import PanelField from '../containers/panel_field';
 import Progress from '../containers/progress';
+import AnnotationToolBar from '/client/modules/annotations/containers/toolbar';
 import {Button, ButtonGroup, ProgressBar} from 'react-bootstrap';
+import SegmentationOptions from '/client/modules/segmentation/containers/options';
 const Styles = ({style, ...props}, theme) => {
   return {
     base: [
@@ -23,13 +25,13 @@ const accuracyBsStyle = (accuracy) => {
   return 'success';
 
 };
-const Component = ({styles, nextSample, setCTSample, showRois, toggleRois, accuracy, classification}) => {
+const Component = ({styles, nextSample, setCTSample, showAnnotations, toggleAnnotations, accuracy, classification}) => {
 
   return (
     <div style={styles.base}>
       <Button
-        onClick={() => toggleRois()} bsStyle="default">
-          {showRois ? 'Hide ROIs' : 'Show ROIs'}
+        onClick={() => toggleAnnotations()} bsStyle="default">
+          {showAnnotations ? 'Hide Annotations' : 'Show Annotations'}
       </Button>
       <br />
       <br />
@@ -42,6 +44,9 @@ const Component = ({styles, nextSample, setCTSample, showRois, toggleRois, accur
         />
       }/>
 
+      <AnnotationToolBar />
+
+      <SegmentationOptions />
       <ButtonGroup>
         <Button
           onClick={nextSample} bsStyle="primary">

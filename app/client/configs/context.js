@@ -10,11 +10,9 @@ export default function () {
     Meteor,
     FlowRouter,
     Collections,
-    LocalCollections: {
-      Rois: new Meteor.Collection(null)
-    },
     LocalState: new ReactiveDict(),
     Tracker,
-    Keypress
+    Keypress,
+    AnnotationNodesCache: new WeakMap()
   };
 }

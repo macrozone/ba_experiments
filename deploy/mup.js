@@ -12,6 +12,9 @@ module.exports = {
   meteor: {
     name: 'ba-4quant',
     path: '../app',
+    volumes: {
+      "/var/www/assets": "/var/www/assets",
+    },
     servers: {
       one: {}
     },

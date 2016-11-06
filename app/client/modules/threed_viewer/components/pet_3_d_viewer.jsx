@@ -81,9 +81,7 @@ const Pet3DViewer = class extends React.Component {
           width={width}
           height={height}
         >
-
           <Scene
-
             camera="maincamera"
             width={width}
             height={height}
@@ -123,7 +121,7 @@ const Pet3DViewer = class extends React.Component {
             />
             { this.props.currentCase ?
             <PointCloudModel
-              key={this.props.currentCaseId}
+              key={this.props.caseId}
               currentCase={this.props.currentCase}
             /> : null }
 

@@ -3,7 +3,7 @@ import {Renderer, Scene, Mesh, Line, Object3D, PointCloud} from 'react-three';
 import _ from 'lodash';
 import THREE from 'three';
 
-import pet from '/lib/palettes/pet';
+import petPalette from '/lib/palettes/pet';
 
 const Y_SCALE = 0.5; // data is scaled in this direction // TODO: find correct value
 
@@ -34,12 +34,12 @@ const PointCloudModel = class extends React.Component {
 
   render() {
     const {width,height,depth} = this.props.currentCase;
-    const numberOfClusters = 256;
+    const numberOfClusters = petPalette.length;
     const {maxSuv, minSuv, opacity, pointSize, blending} = this.props;
 
     const suvRange = maxSuv - minSuv;
 
-    const clusters = [ ...Array(numberOfClusters) ].map((__, index) => ({
+    const clusters = petPalette.map((color) => ({
       geometry: new THREE.Geometry(),
       material: new THREE.PointsMaterial({
         opacity,
@@ -47,8 +47,11 @@ const PointCloudModel = class extends React.Component {
         transparent: true,
         size: pointSize,
         alphaTest: 0.1,
+        // depthTest=false is important, otherwise, you don't see "in" the model
+        // because particles on the surface hide particles in the interior of the body
         depthTest: false,
-        color: new THREE.Color(`rgb(${pet[index][0]},${pet[index][1]},${pet[index][2]})`)
+        // threejs color wants from 0-1 instead of 0-255
+        color: new THREE.Color(...color.map(c => c / 255))
       })
     }));
 

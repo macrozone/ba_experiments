@@ -1,8 +1,8 @@
 export default {
 
   cases: {
-    select({LocalState}, caseId) {
-      LocalState.set('core.currentCaseId', caseId);
+    select({FlowRouter}, caseId) {
+      FlowRouter.setParams({caseId});
     }
   }
 };

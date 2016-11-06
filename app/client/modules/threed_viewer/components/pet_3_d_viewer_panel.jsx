@@ -17,10 +17,10 @@ const Styles = ({style, ...props}, theme) => {
   };
 };
 
-const Component = ({styles, setCase}) => {
+const Component = ({styles, caseId, setCase}) => {
   return (
     <div style={styles.base}>
-      <CaseSelect onChange={setCase}/>
+      <CaseSelect caseId={caseId} onChange={setCase}/>
       <Slider
         label="opacity"
         max={1}

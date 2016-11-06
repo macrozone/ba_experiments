@@ -15,11 +15,11 @@ const Styles = ({style, ...props}, theme) => {
   };
 };
 
-const Component = ({styles, selectCase, cases}) => {
+const Component = ({styles, selectCase, cases, caseId}) => {
   return (
     <div style={styles.base}>
       <p style={styles.label}>Select a case</p>
-      <select onChange={(event) => selectCase(event.target.value)}>
+      <select value={caseId} onChange={(event) => selectCase(event.target.value)}>
       <option>(please select)</option>
       {
         cases.map((aCase) => (

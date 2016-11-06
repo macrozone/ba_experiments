@@ -17,8 +17,9 @@ export default {
       rotation: {x: 0, y: 0,z: 0},
       quaternion: new THREE.Quaternion()
     });
-    LocalState.set('pet_3_d_viewer.ray',new THREE.Ray());
+    LocalState.set('pet_3_d_viewer.cameraRay',new THREE.Ray());
     LocalState.set('pet_3_d_viewer.showAxes',true);
     LocalState.set('pet_3_d_viewer.blending','NormalBlending');
+    LocalState.set('pet_3_d_viewer.markerTool',{});
   }
 };

@@ -18,8 +18,8 @@ export const composer = ({context, caseId}, onData) => {
 export const depsMapper = (context, actions) => ({
   context: () => context,
   addRay: actions.threedViewer.addRay,
-  setRay: actions.threedViewer.setRay,
-  setMarker: actions.threedViewer.setMarker,
+  setCameraRay: actions.threedViewer.setCameraRay,
+  handleMarkerTool: actions.threedViewer.handleMarkerTool,
   setCamera: actions.threedViewer.setCamera,
 
 });

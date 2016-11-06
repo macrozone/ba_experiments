@@ -7,7 +7,7 @@ import Measure from 'react-measure';
 const OrbitControls = require('three-orbit-controls')(THREE);
 import ControlledCamera from '../containers/controlled_camera';
 import Axes from '../containers/axes';
-import Markers from '../containers/markers';
+import MarkerTool from '../containers/marker_tool';
 import PointCloudModel from '../containers/point_cloud_model';
 
 const Pet3DViewer = class extends React.Component {
@@ -22,6 +22,8 @@ const Pet3DViewer = class extends React.Component {
   }
   render() {
     const {width, height} = this.state.dimensions;
+
+
     return (
       <Measure
        onMeasure={(dimensions) => {
@@ -43,20 +45,16 @@ const Pet3DViewer = class extends React.Component {
               this.props.setCamera(camera);
             }}
             onMouseMoveRay={(event, ray) => {
-
-              this.props.setRay(ray);
+              this.props.setCameraRay(ray);
             }}
+            // is called twice :-/
+            // so debounce it.
             onClickRay={_.debounce((event, ray) => {
-              // is called twice :-/
-              // so debounce it.
-
-              this.props.setMarker({ray});
+              this.props.handleMarkerTool(ray);
             }, 100, {leading: true, trailing: false})}
             >
             <Axes />
-            <Markers
-              width={width}
-              height={height}
+            <MarkerTool
             />
             <ControlledCamera
 
@@ -64,6 +62,7 @@ const Pet3DViewer = class extends React.Component {
               ref="camera"
               fov={75}
               target={new THREE.Vector3(0,0,0)}
+              lookAt={new THREE.Vector3(0,0,0)}
               aspect={width / height}
               near={0.1}
               far={1000}

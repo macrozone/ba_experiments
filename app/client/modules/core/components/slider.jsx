@@ -1,6 +1,7 @@
 import React from 'react';
 import withTheme from '/manul-utils/with_theme';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
+import DebounceInput from 'react-debounce-input';
 
 const Styles = ({style, ...props}, theme) => {
   return {
@@ -9,20 +10,29 @@ const Styles = ({style, ...props}, theme) => {
 
       },
       style // allow override
-    ]
+    ],
+    label: {
+      color: 'white'
+    }
   };
 };
 
-const Component = ({styles, step, min, max, label, value, setValue}) => {
+
+const Component = ({styles, debounce, step, min, max, label, value, setValue}) => {
   return (
     <div style={styles.base}>
-      <p>{label}</p>
+      <p style={styles.label}>{label}</p>
       <ReactBootstrapSlider
-      step={step}
-      min={min}
-      max={max}
-      value={value}
-      change={({target: {value}}) => setValue(value)}
+        step={step}
+        min={min}
+        max={max}
+        value={value}
+        change={({target: {value}}) => setValue(value)}
+      />
+      <DebounceInput
+        type="number" value={value}
+        debounceTimeout={debounce}
+        onChange={({target: {value}}) => setValue(value)}
       />
     </div>
   );

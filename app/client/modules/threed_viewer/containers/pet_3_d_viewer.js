@@ -1,34 +1,28 @@
 import {useDeps, composeAll, composeWithTracker, compose} from 'mantra-core';
 import Pet3DViewer from '../components/pet_3_d_viewer.jsx';
 
-export const composer = ({context}, onData) => {
-  const {Meteor, LocalState} = context();
+export const composer = ({context, caseId}, onData) => {
+  const {Meteor, LocalState, Collections} = context();
   const opacity = LocalState.get('pet_3_d_viewer.opacity');
 
-  const addRay = (ray) => {
+  const minSuv = LocalState.get('pet_3_d_viewer.min_suv');
+  const maxSuv = LocalState.get('pet_3_d_viewer.max_suv');
 
-    const rays = LocalState.get('pet_3_d_viewer.rays') || [];
-    rays.push(ray);
-    LocalState.set('pet_3_d_viewer.rays', rays);
-  };
+  // case is a reserved word...
+  const currentCase = Collections.Cases.findOne(caseId);
 
-  const setRay = (ray) => {
-    LocalState.set('pet_3_d_viewer.ray', ray);
-  };
-
-  const setMarker = (marker) => {
-    LocalState.set('pet_3_d_viewer.marker', marker);
-  };
-
-  const setCamera = ({position, quaternion, rotation}) => {
-    LocalState.set('pet_3_d_viewer.camera', {position, quaternion, rotation});
-  };
-  const setMousePosition = (pos) => LocalState.set('pet_3_d_viewer.mousePosition', pos);
-  onData(null, {setMousePosition, opacity, addRay, setMarker, setRay, setCamera});
+  onData(null,
+    {caseId, currentCase, opacity, minSuv, maxSuv});
 };
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
+  addRay: actions.threedViewer.addRay,
+  setRay: actions.threedViewer.setRay,
+  setMarker: actions.threedViewer.setMarker,
+  setCamera: actions.threedViewer.setCamera,
+  setMousePosition: actions.threedViewer.setMousePosition
+
 });
 
 export default composeAll(

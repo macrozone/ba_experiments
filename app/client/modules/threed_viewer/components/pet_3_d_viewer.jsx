@@ -23,7 +23,6 @@ const Pet3DViewer = class extends React.Component {
   render() {
     const {width, height} = this.state.dimensions;
 
-
     return (
       <Measure
        onMeasure={(dimensions) => {

@@ -27,3 +27,4 @@ meteorhacks:picker
 jabbslad:basic-auth
 # standard-minifier-js # makes problems at the moment, TODO: find out why
 standard-minifier-css@1.3.2
+aldeed:simple-schema

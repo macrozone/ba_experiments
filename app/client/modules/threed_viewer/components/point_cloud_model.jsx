@@ -35,7 +35,7 @@ const PointCloudModel = class extends React.Component {
   render() {
     const {width,height,depth} = this.props.currentCase;
     const numberOfClusters = petPalette.length;
-    const {maxSuv, minSuv, opacity, pointSize, blending} = this.props;
+    const {maxSuv, minSuv, opacity, pointSize, blending} = this.props.petOptions;
 
     const suvRange = maxSuv - minSuv;
 

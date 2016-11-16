@@ -3,7 +3,7 @@ import Axes from '../components/axes.jsx';
 
 export const composer = ({context}, onData) => {
   const {Meteor, LocalState} = context();
-  const showAxes = LocalState.get('pet_3_d_viewer.showAxes');
+  const showAxes = LocalState.get('threed_viewer.showAxes');
   onData(null, {showAxes});
 };
 

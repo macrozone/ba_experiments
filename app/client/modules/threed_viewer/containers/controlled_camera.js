@@ -4,7 +4,7 @@ import THREE from 'three';
 
 export const composer = ({context}, onData) => {
   const {LocalState, Meteor} = context();
-  const {position, rotation} = LocalState.get('pet_3_d_viewer.camera');
+  const {position, rotation} = LocalState.get('threed_viewer.camera');
 
   onData(null, {
     position,

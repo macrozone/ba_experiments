@@ -5,22 +5,22 @@ import _ from 'lodash';
 
 export const composer = ({context}, onData) => {
   const {Meteor, LocalState} = context();
-  // const cameraPosition = LocalState.get('pet_3_d_viewer.cameraPosition');
-  // const cameraUp = LocalState.get('pet_3_d_viewer.cameraUp');
-  const camera = LocalState.get('pet_3_d_viewer.camera');
+  // const cameraPosition = LocalState.get('threed_viewer.cameraPosition');
+  // const cameraUp = LocalState.get('threed_viewer.cameraUp');
+  const camera = LocalState.get('threed_viewer.camera');
   onData(null, {camera});
 };
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
   setCameraProp: (prop, value) => {
-    const camera = context.LocalState.get( 'pet_3_d_viewer.camera');
+    const camera = context.LocalState.get( 'threed_viewer.camera');
     _.set(camera, prop, parseFloat(value));
-    context.LocalState.set( 'pet_3_d_viewer.camera', camera);
+    context.LocalState.set( 'threed_viewer.camera', camera);
   },
   setFrontal: () => {
     context.LocalState.set(
-      'pet_3_d_viewer.camera', {
+      'threed_viewer.camera', {
         position: {x: 0, y: 0, z: 450},
         rotation: {_x: 0, _y: 0, _z: 0}
       }
@@ -28,7 +28,7 @@ export const depsMapper = (context, actions) => ({
   },
   setSagittal: () => {
     context.LocalState.set(
-      'pet_3_d_viewer.camera', {
+      'threed_viewer.camera', {
         position: {x: -450, y: 0, z: 0},
         rotation: {_x: 0, _y: -Math.PI / 2, _z: 0}
       }
@@ -36,7 +36,7 @@ export const depsMapper = (context, actions) => ({
   },
   setTransversal: () => {
     context.LocalState.set(
-      'pet_3_d_viewer.camera', {
+      'threed_viewer.camera', {
         position: {x: 0, y: 450, z: 0},
         rotation: {_x: -Math.PI / 2, _y: 0, _z: 0}
       }

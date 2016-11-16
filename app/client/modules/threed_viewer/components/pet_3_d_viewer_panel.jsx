@@ -1,10 +1,11 @@
 import React from 'react';
 import withTheme from '/manul-utils/with_theme';
-import Slider from '/client/modules/core/containers/slider';
+
 import SelectAxis from '../containers/select_axis';
 import ToggleAxesButton from '../containers/toggle_axes_button';
 import CaseSelect from '/client/modules/core/containers/case_select';
-import SelectState from '/client/modules/core/containers/select_state';
+import PetSettings from '../containers/pet_settings';
+import {Tabs, Tab} from 'react-bootstrap';
 
 const Styles = ({style, ...props}, theme) => {
   return {
@@ -21,48 +22,10 @@ const Component = ({styles, caseId, setCase}) => {
   return (
     <div style={styles.base}>
       <CaseSelect caseId={caseId} onChange={setCase}/>
-      <Slider
-        label="opacity"
-        max={1}
-        min={0.01}
-        step={0.01}
-        localState="pet_3_d_viewer.opacity"
-        debounce={300}
-        />
-      <Slider
-        label="minSuv"
-        max={0.01}
-        min={0.00001}
-        step={0.00001}
-        localState="pet_3_d_viewer.min_suv"
-        debounce={300}
-        />
-      <Slider
-        label="maxSuv"
-        max={0.01}
-        min={0.00001}
-        step={0.00001}
-        localState="pet_3_d_viewer.max_suv"
-        debounce={300}
-        />
-      <Slider
-        label="Point size"
-        max={2}
-        min={0.01}
-        step={0.1}
-        localState="pet_3_d_viewer.point_size"
-        debounce={300}
-        />
-      <SelectState
-        label="Blending"
-        localState="pet_3_d_viewer.blending"
-        options={[
-          {value: 'NoBlending', label: 'NoBlending'},
-          {value: 'NormalBlending', label: 'NormalBlending'},
-          {value: 'AdditiveBlending', label: 'AdditiveBlending'},
-          {value: 'SubtractiveBlending', label: 'SubtractiveBlending'},
-          {value: 'MultiplyBlending', label: 'MultiplyBlending'}
-        ]} />
+        <Tabs>
+          <Tab eventKey={1} title="PET"><PetSettings /></Tab>
+          <Tab eventKey={2} title="CT"><h1>CT settings..</h1></Tab>
+        </Tabs>
       <SelectAxis />
       <ToggleAxesButton />
     </div>

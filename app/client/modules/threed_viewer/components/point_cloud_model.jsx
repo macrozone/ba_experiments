@@ -59,14 +59,20 @@ const PointCloudModel = class extends React.Component {
     // get value between 0 and 1 in the suv-window
     const getNormalized = suv => (suv - minSuv) / suvRange;
 
-    // get cluster index (can be outside of range)
-    const getClusterIndex = suv => Math.floor(getNormalized(suv) * numberOfClusters);
+    // get cluster index
+    const getClusterIndex = suv => _.clamp(
+      Math.floor(getNormalized(suv) * numberOfClusters),
+      0,
+      numberOfClusters - 1
+    );
 
 
     if (this.state.data) {
       for (let i = 0; i < this.state.data.byteLength; i++) {
         const value = this.state.data[i] || 0.0; // some are undefined, TODO: find out why
-        if (value >= minSuv && value < maxSuv) {
+        // we ommit pixels below min treshhold (Because they are rendered black)
+        // but show pixels over the max treshhold
+        if (value >= minSuv) {
           const clusterIndex = getClusterIndex(value);
           const x = i % width;
           const z = Math.floor(i / width) % height;

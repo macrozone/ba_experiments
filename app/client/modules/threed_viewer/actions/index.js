@@ -1,29 +1,52 @@
 import _ from 'lodash';
 import getCursorPositionOnRay from '../libs/get_cursor_position_on_ray';
+import THREE from 'three';
 
 
 export default {
 
   threedViewer: {
-    addRay({LocalState}, ray) {
 
-      const rays = LocalState.get('pet_3_d_viewer.rays') || [];
-      rays.push(ray);
-      LocalState.set('pet_3_d_viewer.rays', rays);
-    },
-
-    setCameraRay({LocalState}, ray) {
+    setCameraRay({ LocalState }, ray) {
       LocalState.set('pet_3_d_viewer.cameraRay', ray);
     },
 
-    handleMarkerTool({LocalState}, ray) {
-      const markerTool = LocalState.get('pet_3_d_viewer.markerTool');
+    startSphereAnnotation({ LocalState }) {
+      LocalState.set('pet_3d_viewer.currentAnnotationTool', { type: 'sphere' });
+    },
+    handleAnnotationKeyPress({ LocalState }, event) {
+      const tool = LocalState.get('pet_3d_viewer.currentAnnotationTool');
+
+      if (tool) {
+        if (event.keyCode === 27) {        // esc
+          LocalState.delete('pet_3d_viewer.currentAnnotationTool');
+        } else if (event.keyCode === 8) {   // backspace / go back
+            // TODO: check type
+          if (_.get(tool, 'position')) {
+            // has position, remove it
+            LocalState.set('pet_3d_viewer.currentAnnotationTool', _.omit(tool, 'position'));
+          } else if (_.get(tool, 'ray')) {
+            // has ray, remove it
+            LocalState.set('pet_3d_viewer.currentAnnotationTool', _.omit(tool, 'ray'));
+          }
+        }
+      }
+    },
+    handleAnnotationToolClick({ FlowRouter, Collections: { Annotations }, LocalState }, ray) {
+      const tool = LocalState.get('pet_3d_viewer.currentAnnotationTool');
+      const labelId = LocalState.get('labels.currentLabelId');
+      const caseId = FlowRouter.getParam('caseId');
+      if (!caseId) {
+        alert('Please select a case');
+        return;
+      }
+      // TODO: check type
       const cameraRay = LocalState.get('pet_3_d_viewer.cameraRay');
       const camera = LocalState.get('pet_3_d_viewer.camera');
 
       // add a guiding ray if it has none
-      if (!_.get(markerTool, 'ray')) {
-        LocalState.set('pet_3_d_viewer.markerTool', {ray});
+      if (!_.get(tool, 'ray')) {
+        LocalState.set('pet_3d_viewer.currentAnnotationTool', { ...tool, ray });
         // TODO : rotate camera
         // this does not work yet:
         /*
@@ -31,21 +54,31 @@ export default {
         console.log(newRotation);
         LocalState.set('pet_3_d_viewer.camera', {...camera, rotation: newRotation});
         */
-      } else if (!_.get(markerTool, 'position')) {
+      } else if (!_.get(tool, 'position')) {
         // already has a guide, but no position
-        const position = getCursorPositionOnRay({camera, cameraRay, markerRay: markerTool.ray});
-        LocalState.set('pet_3_d_viewer.markerTool', {...markerTool, position});
+        const position = getCursorPositionOnRay({ camera, cameraRay, markerRay: tool.ray });
+        LocalState.set('pet_3d_viewer.currentAnnotationTool', { ...tool, position });
       } else {
-        // todo add marker
-        alert('marker done');
-        // clear
-        LocalState.set('pet_3_d_viewer.markerTool', {});
+        if (!labelId) {
+          alert('please select a label');
+          return;
+        }
+        const radius = new THREE.Ray().copy(cameraRay).distanceToPoint(tool.position);
+        Annotations.insert({
+          caseId,
+          labelId,
+          type: 'sphere_3d',
+          props: {
+            ...tool, radius,
+          },
+        });
+        LocalState.set('pet_3d_viewer.currentAnnotationTool', null);
       }
     },
 
-    setCamera({LocalState}, {position, quaternion, rotation}) {
-      LocalState.set('pet_3_d_viewer.camera', {position, quaternion, rotation});
-    }
+    setCamera({ LocalState }, { position, quaternion, rotation }) {
+      LocalState.set('pet_3_d_viewer.camera', { position, quaternion, rotation });
+    },
 
-  }
+  },
 };

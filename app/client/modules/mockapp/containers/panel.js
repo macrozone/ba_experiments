@@ -6,12 +6,12 @@ export const composer = ({context}, onData) => {
   // create fake values by a seeded random
   const {Meteor, LocalState, Collections: {Annotations}} = context();
   const image = LocalState.get('mockapp.currentImage');
-  const seed = Annotations.find().count();
+  const seed = Annotations.find({caseId: '2d-sample-app'}).count();
   Math.seedrandom(`something${image}${seed}`);
   // we have to re-invoke lodash
   const _ = lodash.runInContext();
 
-  const accuracy = Math.tanh((Math.random() * 10 + Annotations.find().count()) / 10);
+  const accuracy = Math.tanh((Math.random() * 10 + Annotations.find({caseId: '2d-sample-app'}).count()) / 10);
   const t = _.sample([ '0','1', '2', '3', '4', 'X' ]);
   const n = _.sample([ '0','1', '2', '3', 'X' ]);
   const m = _.sample([ '0','1' ]);

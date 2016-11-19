@@ -1,4 +1,4 @@
-import {createApp} from 'mantra-core';
+import { createApp } from 'mantra-core';
 import initContext from './configs/context';
 
 // modules
@@ -8,6 +8,7 @@ import annotationsModule from './modules/annotations';
 import segmentationModule from './modules/segmentation';
 import threed_viewerModule from './modules/threed_viewer';
 
+import 'react-select/dist/react-select.css';
 // init context
 const context = initContext();
 

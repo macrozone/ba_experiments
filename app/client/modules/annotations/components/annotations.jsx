@@ -1,17 +1,17 @@
 import React from 'react';
 
-import {Rect, Group} from 'react-konva';
+import { Rect, Group } from 'react-konva';
 
 import Polygon from '../components/polygon';
 import Circle from '../components/circle';
 import Bitmap from '../containers/bitmap';
 import _ from 'lodash';
-const componentMap = {
-  circle: Circle,
-  polygon: Polygon,
-  bitmap: Bitmap
-};
 
+const componentMap = {
+  circle2d: Circle,
+  polygon2d: Polygon,
+  bitmap2d: Bitmap,
+};
 
 const Annotations = ({
     annotations,
@@ -21,13 +21,11 @@ const Annotations = ({
     cursorPosition,
     stopEditingCurrentAnnotation,
     toolEvents,
-    width, height
+    width, height,
   }) => {
-
-  const renderAnnotation = ({_id, type, color, props}) => {
+  const renderAnnotation = ({ _id, type, label = null, props }) => {
     const isCurrent = currentEditingAnnotation && currentEditingAnnotation._id === _id;
     const onClick = (e) => {
-      console.log(e);
       if (altKey) {
         e.cancelBubble = true;
         deleteAnnotation(_id);
@@ -38,16 +36,18 @@ const Annotations = ({
     if (!Component) {
       console.error('unknown annotation type', _id, type);
     } else {
-      return <Component
-      onClick={onClick}
-      isCurrent={isCurrent}
-      zIndex={isCurrent ? 10 : 0}
-      cursorPosition={cursorPosition}
-      key={_id}
-      color={color}
-      props={props}
-      stopEditingCurrentAnnotation={stopEditingCurrentAnnotation}
-    />;
+      return (
+        <Component
+          onClick={onClick}
+          isCurrent={isCurrent}
+          zIndex={isCurrent ? 10 : 0}
+          cursorPosition={cursorPosition}
+          key={_id}
+          color={label ? label.color : 'white'}
+          props={props}
+          stopEditingCurrentAnnotation={stopEditingCurrentAnnotation}
+        />
+      );
     }
   };
 

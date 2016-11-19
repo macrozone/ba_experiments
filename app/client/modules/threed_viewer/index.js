@@ -20,6 +20,6 @@ export default {
     LocalState.set('pet_3_d_viewer.cameraRay',new THREE.Ray());
     LocalState.set('pet_3_d_viewer.showAxes',true);
     LocalState.set('pet_3_d_viewer.blending','NormalBlending');
-    LocalState.set('pet_3_d_viewer.markerTool',{});
+    LocalState.set('pet_3d_viewer.currentAnnotationTool',{});
   }
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Renderer, Scene, Mesh, Line, Object3D, PointCloud} from 'react-three';
+import { Renderer, Scene, Mesh, Line, Object3D, PointCloud } from 'react-three';
 import _ from 'lodash';
 import THREE from 'three';
 
@@ -12,34 +12,33 @@ const PointCloudModel = class extends React.Component {
     super();
 
     this.state = {
-      data: null
+      data: null,
     };
   }
   componentDidMount() {
-    var oReq = new XMLHttpRequest();
-    const url = this.props.currentCase.data;
+    const oReq = new XMLHttpRequest();
+    const url = `/data/${this.props.currentCase.data}`;
     oReq.open('GET', url, true);
     oReq.responseType = 'arraybuffer';
 
     oReq.onload = () => {
       const arrayBuffer = oReq.response; // Note: not oReq.responseText
       if (arrayBuffer) {
-        var byteArray = new Float32Array(arrayBuffer);
-        this.setState({data: byteArray});
+        const byteArray = new Float32Array(arrayBuffer);
+        this.setState({ data: byteArray });
       }
     };
     oReq.send(null);
-
   }
 
   render() {
-    const {width,height,depth} = this.props.currentCase;
+    const { width, height, depth } = this.props.currentCase;
     const numberOfClusters = petPalette.length;
-    const {maxSuv, minSuv, opacity, pointSize, blending} = this.props;
+    const { maxSuv, minSuv, opacity, pointSize, blending } = this.props;
 
     const suvRange = maxSuv - minSuv;
 
-    const clusters = petPalette.map((color) => ({
+    const clusters = petPalette.map(color => ({
       geometry: new THREE.Geometry(),
       material: new THREE.PointsMaterial({
         opacity,
@@ -51,8 +50,8 @@ const PointCloudModel = class extends React.Component {
         // because particles on the surface hide particles in the interior of the body
         depthTest: false,
         // threejs color wants from 0-1 instead of 0-255
-        color: new THREE.Color(...color.map(c => c / 255))
-      })
+        color: new THREE.Color(...color.map(c => c / 255)),
+      }),
     }));
 
 
@@ -69,24 +68,26 @@ const PointCloudModel = class extends React.Component {
 
     if (this.state.data) {
       for (let i = 0; i < this.state.data.byteLength; i++) {
-        const value = this.state.data[i] || 0.0; // some are undefined, TODO: find out why
+        const valueRaw = this.state.data[i] || 0.0; // some are undefined, TODO: find out why
+        const value = valueRaw / 100000;
         // we ommit pixels below min treshhold (Because they are rendered black)
         // but show pixels over the max treshhold
+
         if (value >= minSuv) {
           const clusterIndex = getClusterIndex(value);
           const x = i % width;
           const z = Math.floor(i / width) % height;
           const y = -Math.floor(i / (width * height)) * Y_SCALE; // is swapped
-          clusters[clusterIndex].geometry.vertices.push({x,y,z});
+          clusters[clusterIndex].geometry.vertices.push({ x, y, z });
         }
       }
     }
 
-    return <Object3D
+    return (<Object3D
       position={new THREE.Vector3(-width / 2, depth * Y_SCALE / 2, -height / 2)}
     >
-    {
-      clusters.map(({material, geometry}, index) => (
+      {
+      clusters.map(({ material, geometry }, index) => (
         <PointCloud
           key={index}
           material={material}
@@ -94,19 +95,16 @@ const PointCloudModel = class extends React.Component {
         />
       ))
     }
-    </Object3D>;
-
-
+    </Object3D>);
   }
 };
-
 
 
 PointCloudModel.propTypes = {
 };
 
 PointCloudModel.defaultProps = {
-  rays: []
+  rays: [],
 };
 
 PointCloudModel.displayName = 'PointCloudModel';

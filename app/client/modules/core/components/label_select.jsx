@@ -11,18 +11,30 @@ const Styles = ({ style, ...props }, theme) => ({
   ],
 });
 
+const optionRenderer = label => (
+  <span>
+    <span
+      style={{
+        display: 'inline-block',
+        backgroundColor: label.color,
+        width: 16,
+        height: 16,
+        marginRight: 8,
+        borderRadius: '50%',
+      }}
+    />
+    {label.name}
+  </span>
+);
+
 const Component = ({ styles, labels, setCurrentLabel, currentLabelId }) => (
   <div style={styles.base}>
     <Select
       onChange={(label) => {
         setCurrentLabel(label._id);
       }}
-      optionRenderer={label => (
-        <span style={{ color: label.color }}>{label.name}</span>
-      )}
-      valueRenderer={label => (
-        <span style={{ color: label.color }}>{label.name}</span>
-      )}
+      optionRenderer={optionRenderer}
+      valueRenderer={optionRenderer}
       value={labels.find(l => l._id === currentLabelId)} options={labels}
     />
   </div>

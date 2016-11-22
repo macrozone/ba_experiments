@@ -17,7 +17,7 @@ const PointCloudModel = class extends React.Component {
   }
   componentDidMount() {
     const oReq = new XMLHttpRequest();
-    const url = `/data/${this.props.currentCase.data}`;
+    const url = `/data${this.props.currentCase.data}`;
     oReq.open('GET', url, true);
     oReq.responseType = 'arraybuffer';
 
@@ -69,7 +69,7 @@ const PointCloudModel = class extends React.Component {
     if (this.state.data) {
       for (let i = 0; i < this.state.data.byteLength; i++) {
         const valueRaw = this.state.data[i] || 0.0; // some are undefined, TODO: find out why
-        const value = valueRaw / 100000;
+        const value = valueRaw;
         // we ommit pixels below min treshhold (Because they are rendered black)
         // but show pixels over the max treshhold
 

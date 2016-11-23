@@ -1,5 +1,5 @@
 import React from 'react';
-import withTheme from '/manul-utils/with_theme';
+import withTheme from '/lib/with_theme';
 import ReactBootstrapSlider from 'react-bootstrap-slider';
 import DebounceInput from 'react-debounce-input';
 

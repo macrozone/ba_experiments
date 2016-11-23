@@ -85,7 +85,6 @@ const getMode = ({ ray, position }) => {
   return 'settingRay';
 };
 
-
 const SphereAnnotationTool = ({ cameraRay, camera, sphereAnnotationTool = {} }) => {
   const mode = getMode(sphereAnnotationTool);
   const cameraRayT = new THREE.Ray().copy(cameraRay);
@@ -103,7 +102,6 @@ const SphereAnnotationTool = ({ cameraRay, camera, sphereAnnotationTool = {} }) 
     settingPosition: () => 8, // or cameraRayT.distanceToPoint(positionOfHandle),
     settingRadius: () => cameraRayT.distanceToPoint(sphereAnnotationTool.position),
   };
-
 
   const radius = radiusByMode[mode]();
   return (

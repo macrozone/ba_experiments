@@ -1,5 +1,5 @@
 import React from 'react';
-import withTheme from '/manul-utils/with_theme';
+import withTheme from '/lib/with_theme';
 
 import { Button } from 'react-bootstrap';
 import _ from 'lodash';

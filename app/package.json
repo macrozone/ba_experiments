@@ -36,7 +36,7 @@
     "react-mounter": "^1.0.0",
     "react-select": "^1.0.0-rc.2",
     "react-simple-di": "^1.0.1",
-    "react-three": "/Users/macrozone/git/react-three",
+    "react-three": "^0.9.4",
     "recompose": "^0.20.2",
     "seedrandom": "^2.4.2",
     "three": "^0.74.0",

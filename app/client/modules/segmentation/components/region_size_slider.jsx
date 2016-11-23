@@ -1,5 +1,5 @@
 import React from 'react';
-import withTheme from '/manul-utils/with_theme';
+import withTheme from '/lib/with_theme';
 import _ from 'lodash';
 
 import ReactBootstrapSlider from 'react-bootstrap-slider';

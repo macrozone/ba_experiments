@@ -1,5 +1,5 @@
 import React from 'react';
-import withTheme from '/manul-utils/with_theme';
+import withTheme from '/lib/with_theme';
 import OpacitySlider from '../containers/opacity_slider';
 import RegionSizeSlider from '../containers/region_size_slider';
 const Styles = ({style, ...props}, theme) => {

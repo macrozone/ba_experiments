@@ -1,5 +1,5 @@
 import React from 'react';
-import withTheme from '/manul-utils/with_theme';
+import withTheme from '/lib/with_theme';
 import {Layer, Line, Circle, Rect, Stage, Group, Image} from 'react-konva';
 import Color from 'color';
 import Annotations from '/client/modules/annotations/containers/annotations';

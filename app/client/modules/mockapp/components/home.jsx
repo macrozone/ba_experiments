@@ -1,5 +1,5 @@
 import React from 'react';
-import withTheme from '/manul-utils/with_theme';
+import withTheme from '/lib/with_theme';
 import Draw from '../containers/draw';
 import Panel from '../containers/panel';
 const Styles = ({style, ...props}, theme) => {

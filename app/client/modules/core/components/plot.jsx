@@ -1,5 +1,5 @@
 import React from 'react';
-import withTheme from '/manul-utils/with_theme';
+import withTheme from '/lib/with_theme';
 import {Layer, Circle, Rect, Stage, Group} from 'react-konva';
 
 const Styles = ({style, ...props}, theme) => {

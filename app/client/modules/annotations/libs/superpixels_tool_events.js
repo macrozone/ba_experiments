@@ -1,4 +1,4 @@
-
+import Color from 'color';
 import { dataURLtoBlob } from '../libs/utilities';
 export default ({
     currentEditingAnnotation,
@@ -8,22 +8,26 @@ export default ({
     context,
     }) => ({
       onClick: ({ evt: { x, y } }) => {
-        const { Collections: { AnnotationBitmaps } } = context();
-        const { canvas, getLabelForClick } = segmentation;
+        const { LocalState, Collections: { AnnotationBitmaps, Labels } } = context();
+        const labelId = LocalState.get('labels.currentLabelId');
+        const label = Labels.findOne(labelId);
+        const color = new Color(label.color);
+        const colorArray = color.rgbArray();
+        const { canvas, getSegmentForClick } = segmentation;
         const { width, height } = canvas;
       // console.log(x,y);
       // console.log(canvas.getContext('2d').getImageData(0,0, width,height));
-        const label = getLabelForClick(x, y);
-      // console.log(label);
+        const segment = getSegmentForClick(x, y);
+      // console.log(segment);
         const annotationCanvas = document.createElement('canvas');
         annotationCanvas.width = width;
         annotationCanvas.height = height;
         const annotationContext = annotationCanvas.getContext('2d');
         const annotationData = annotationContext.getImageData(0, 0, width, height);
-        for (const pixel of label.pixels) {
-          annotationData.data[pixel] = 255;// result.data[pixel];
-          annotationData.data[pixel + 1] = 0;// result.data[pixel];
-          annotationData.data[pixel + 2] = 0;// result.data[pixel];
+        for (const pixel of segment.pixels) {
+          annotationData.data[pixel] = colorArray[0];// result.data[pixel];
+          annotationData.data[pixel + 1] = colorArray[1];// result.data[pixel];
+          annotationData.data[pixel + 2] = colorArray[2];// result.data[pixel];
           annotationData.data[pixel + 3] = 128;
         }
       // console.log(annotationData.data);

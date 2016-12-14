@@ -1,13 +1,13 @@
 import React from 'react';
-import {Image} from 'react-konva';
+import { Image } from 'react-konva';
 import Color from 'color';
 
-import { onlyUpdateForKeys} from 'recompose';
+import { onlyUpdateForKeys } from 'recompose';
 
-const Bitmap = onlyUpdateForKeys([ 'loaded', 'image' ])(({loaded, image, onClick}) => {
+const Bitmap = onlyUpdateForKeys(['loaded', 'image'])(({ loaded, image, onClick }) => {
   // console.log('render image', image);
-  const cache = node => {
-    console.log('cache', node);
+  const cache = (node) => {
+
     // node.cache();
     // node.drawHitFromCache();
 
@@ -17,8 +17,8 @@ const Bitmap = onlyUpdateForKeys([ 'loaded', 'image' ])(({loaded, image, onClick
       ref={node => node && loaded && cache(node)}
       image={loaded ? image : null}
       onClick={onClick}
-      />
-    );
+    />
+  );
 });
 
 

@@ -31,7 +31,6 @@ const Annotations = ({
         deleteAnnotation(_id);
       }
     };
-
     const Component = componentMap[type];
     if (!Component) {
       console.error('unknown annotation type', _id, type);

@@ -7,7 +7,6 @@ export const composer = ({ context, caseId }, onData) => {
   const annotationsWithLabels = Annotations.find({ caseId }).map(
     annotation => ({ annotation, label: Labels.findOne(annotation.labelId) })
   );
-  console.log(annotationsWithLabels);
   onData(null, { annotationsWithLabels });
 };
 

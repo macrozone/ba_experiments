@@ -9,6 +9,10 @@ export const composer = ({ context, segmentation, createAnnotation, updateAnnota
 
   const currentEditingAnnotationId = LocalState.get('annotations.currentEditingAnnotationId');
   const annotations = Collections.Annotations.find({ caseId: '2d-sample-app' }).fetch();
+  const annotationsWithLabels = annotations.map(
+    annotation => ({ ...annotation, label: Collections.Labels.findOne(annotation.labelId) })
+  );
+
   const currentEditingAnnotation = Collections.Annotations.findOne(currentEditingAnnotationId);
   const currentToolId = LocalState.get('annotations.currentToolId');
 
@@ -29,7 +33,7 @@ export const composer = ({ context, segmentation, createAnnotation, updateAnnota
 
   const toolEvents = toolEventMap[currentToolId];
 
-  onData(null, { toolEvents, currentToolId, currentEditingAnnotation, annotations });
+  onData(null, { toolEvents, currentToolId, currentEditingAnnotation, annotations: annotationsWithLabels });
 };
 
 export const addLabels = ({ context, annotations }, onData) => {

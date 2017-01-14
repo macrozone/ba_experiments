@@ -10,7 +10,12 @@ export default {
     setCameraRay({ LocalState }, ray) {
       LocalState.set('pet_3_d_viewer.cameraRay', ray);
     },
-
+    showModelLoadingMessage({ LocalState }) {
+      LocalState.set('pet_3d_viewer.modelIsLoaded', false);
+    },
+    hideModelLoadingMessage({ LocalState }) {
+      LocalState.set('pet_3d_viewer.modelIsLoaded', true);
+    },
     startSphereAnnotation({ LocalState }) {
       LocalState.set('pet_3d_viewer.currentAnnotationTool', { type: 'sphere' });
     },

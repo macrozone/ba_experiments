@@ -19,12 +19,13 @@ const PointCloudModel = class extends React.Component {
     const url = `/data${this.props.currentCase.data}`;
     oReq.open('GET', url, true);
     oReq.responseType = 'arraybuffer';
-
+    _.invoke(this.props, 'onLoadStart');
     oReq.onload = () => {
       const arrayBuffer = oReq.response; // Note: not oReq.responseText
       if (arrayBuffer) {
         const byteArray = new Float32Array(arrayBuffer);
         this.setState({ data: byteArray });
+        _.invoke(this.props, 'onLoadFinish');
       }
     };
     oReq.send(null);
@@ -85,16 +86,16 @@ const PointCloudModel = class extends React.Component {
       <Object3D
         position={new THREE.Vector3(-width / 2, depth * Y_SCALE / 2, -height / 2)}
       >
-        {
-      clusters.map(({ material, geometry }, index) => (
-        <PointCloud
-          key={index}
-          material={material}
-          geometry={geometry}
-        />
+        { clusters.map(({ material, geometry }, index) => (
+          <PointCloud
+            key={index}
+            material={material}
+            geometry={geometry}
+          />
       ))
-    }
-      </Object3D>);
+      }
+      </Object3D>
+    );
   }
 };
 

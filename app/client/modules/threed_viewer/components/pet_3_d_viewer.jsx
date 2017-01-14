@@ -27,10 +27,17 @@ const Pet3DViewer = class extends React.Component {
   render() {
     const { width, height } = this.state.dimensions;
 
-    if (!this.props.currentCase) {
+    if (!this.props.caseId) {
       return (
         <Alert bsStyle="primary">
           Please select a Case
+        </Alert>
+      );
+    }
+    if (!this.props.currentCase) {
+      return (
+        <Alert bsStyle="primary">
+          Loading ....
         </Alert>
       );
     }
@@ -53,9 +60,17 @@ const Pet3DViewer = class extends React.Component {
         }}
       >
         <div style={{ height: '100%', width: '100%' }}>
+          {!this.props.modelIsLoaded && (
+            <div style={{ fontWeight: 'bold', color: 'white', position: 'absolute', top: 10, left: 10 }}>
+              Loading...
+            </div>
+          )}
           <Renderer
             width={width}
             height={height}
+            rendererProps={{
+              preserveDrawingBuffer: true, // needed for canvas.toDataURL (in tests)
+            }}
           >
             <Scene
               camera="maincamera"
@@ -67,6 +82,8 @@ const Pet3DViewer = class extends React.Component {
               <PointCloudModel
                 key={this.props.caseId}
                 currentCase={this.props.currentCase}
+                onLoadStart={this.props.showModelLoadingMessage}
+                onLoadFinish={this.props.hideModelLoadingMessage}
               />
 
             </Scene>

@@ -1,0 +1,4 @@
+{ "_id" : "PRtafRzrete8spaWm", "name" : "tumor", "color" : "#ff0000" }
+{ "_id" : "mB9EXLvyhk6hz2EWB", "name" : "metastasis", "color" : "#00ff00" }
+{ "_id" : "nbwMq2gLHNgNozNhk", "name" : "node", "color" : "#00ffff" }
+{ "_id" : "hMf42yXjcYjeBe8Pn", "name" : "none", "color" : "#ffff00" }

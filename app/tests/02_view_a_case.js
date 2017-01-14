@@ -27,6 +27,7 @@ describe('View a case (sc-102)', function () {
       height: 600,
     });
     browser.url(`http://localhost:3000/pet3dviewer/${_id}`);
+    waitForLoading();
   });
   it('shows title of case on the page', function () {
     const { title } = server.execute(getFirstCaseOnServer);

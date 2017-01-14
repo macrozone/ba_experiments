@@ -31,3 +31,5 @@ aldeed:collection2
 tmeasday:acceptance-test-driver
 
 xolvio:backdoor # for tests
+xolvio:cleaner # for tests
+percolate:migrations

@@ -16,7 +16,7 @@ const getFirstCaseOnServer = () => {
 };
 
 
-describe('Sphere annotation tool @watch', function () {
+describe('Sphere annotation tool', function () {
   beforeEach(waitForLoading);
   before(function () {
     const { _id } = server.execute(getFirstCaseOnServer);
@@ -25,6 +25,7 @@ describe('Sphere annotation tool @watch', function () {
       height: 600,
     });
     browser.url(`http://localhost:3000/pet3dviewer/${_id}`);
+    waitForLoading();
   });
   describe('tool button', function () {
     it('has a button to start the annotation', function () {

@@ -6,6 +6,7 @@
     "start-test": "meteor test --full-app --driver-package tmeasday:acceptance-test-driver  --settings settings_dev.json",
     "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
     "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests",
+    "chimp-record": "RECORD=true npm run chimp-test",
     "storybook": "start-storybook -p 9001",
     "start": "meteor --settings settings_dev.json"
   },
@@ -38,7 +39,7 @@
     "react-mounter": "^1.0.0",
     "react-select": "^1.0.0-rc.2",
     "react-simple-di": "^1.0.1",
-    "react-three": "https://github.com/panter/react-three#ed66fc0a22822867810de2165c0183ea19c2f53b",
+    "react-three": "https://github.com/panter/react-three#b4659b4061a9f36f63d9d29221ea9e809193c985",
     "recompose": "^0.20.2",
     "seedrandom": "^2.4.2",
     "three": "^0.74.0",

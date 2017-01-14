@@ -5,7 +5,7 @@ export const composer = ({ context }, onData) => {
   const { Meteor, Collections, LocalState } = context();
   if (Meteor.subscribe('labels.all').ready()) {
     const currentLabelId = LocalState.get('labels.currentLabelId');
-    const labels = Collections.Labels.find().fetch();
+    const labels = Collections.Labels.find({}, { sort: { position: 1 } }).fetch();
     onData(null, { currentLabelId, labels });
   }
 };

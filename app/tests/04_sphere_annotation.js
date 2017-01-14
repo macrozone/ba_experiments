@@ -4,52 +4,185 @@
 /* eslint import/newline-after-import: 0*/
 
 
-import waitForLoading from './tools/wait_for_loading';
 import expectCanvas from './tools/expect_canvas';
+import getImageFileForTest from './tools/get_image_file_for_test';
+import waitForLoading from './tools/wait_for_loading';
 
 
-const RECORD_IMAGE = true;
-
-const getFirstCaseOnServer = () => {
+const getSampleCaseOnServer = () => {
   const Cases = require('/lib/collections/cases').default;
-  return Cases.findOne({}, { sort: { title: 1 } });
+  return Cases.findOne('xRsQ5Wk9xcp6Dnfn9');
+};
+
+const getAnnotationsOnServer = (caseId) => {
+  const Annotations = require('/lib/collections/annotations').default;
+  return Annotations.find({ caseId }).fetch();
+};
+
+const getLabelsOnServer = () => {
+  const Labels = require('/lib/collections/labels').default;
+  return Labels.find({}, { sort: { position: 1 } }).fetch();
+};
+
+const clearAnnotationsOnServer = () => {
+  const Annotations = require('/lib/collections/annotations').default;
+  Annotations.remove({});
 };
 
 
 describe('Sphere annotation tool', function () {
-  beforeEach(waitForLoading);
-  before(function () {
-    const { _id } = server.execute(getFirstCaseOnServer);
+  beforeEach(function () {
+    server.execute(clearAnnotationsOnServer);
+    const { _id } = server.execute(getSampleCaseOnServer);
     browser.setViewportSize({
       width: 800,
       height: 600,
     });
     browser.url(`http://localhost:3000/pet3dviewer/${_id}`);
     waitForLoading();
+    if (browser.isExisting('button=Cancel annotation')) {
+      browser.click('button=Cancel annotation');
+    }
   });
-  describe('tool button', function () {
-    it('has a button to start the annotation', function () {
-      const exists = browser.waitForExist('button=Sphere annotation', 5000);
-      expect(exists).to.be.true;
-    });
 
-    it('changes its label on click to "Cancel annotation" and back on additional click', function () {
-      browser.waitForExist('button=Sphere annotation', 5000);
-      const element = browser.element('button=Sphere annotation');
-      element.click();
-      expect(element.getText()).to.equal('Cancel annotation');
-      element.click();
-      expect(element.getText()).to.equal('Sphere annotation');
-    });
+  it('has a button to start the annotation', function () {
+    const exists = browser.waitForExist('button=Sphere annotation', 5000);
+    expect(exists).to.be.true;
+  });
 
-    it('if selected, a sphere is visible on the screen', function () {
-      browser.waitForExist('button=Sphere annotation', 5000);
-      const element = browser.element('button=Sphere annotation');
-      element.click();
+  it('changes its label on click to "Cancel annotation" and back on additional click', function () {
+    browser.waitForExist('button=Sphere annotation', 5000);
+    const toolButton = browser.element('button=Sphere annotation');
+    toolButton.click();
+    expect(toolButton.getText()).to.equal('Cancel annotation');
+    toolButton.click();
 
-      browser.moveToObject('canvas', 200, 200);
+    expect(toolButton.getText()).to.equal('Sphere annotation');
+  });
 
-      expectCanvas('case1_sphere_active', RECORD_IMAGE);
-    });
+  it('if selected, a sphere-cursor is visible on the screen', function () {
+    browser.waitForExist('button=Sphere annotation', 5000);
+    const toolButton = browser.element('button=Sphere annotation');
+    toolButton.click();
+    browser.moveToObject('canvas', 250, 250);
+    expectCanvas(getImageFileForTest(this.test), process.env.RECORD);
+  });
+
+  it('sets a line after first click', function () {
+    browser.waitForExist('button=Sphere annotation', 5000);
+    const toolButton = browser.element('button=Sphere annotation');
+    toolButton.click();
+
+    browser.moveToObject('canvas', 250, 250); // move mouse there
+    browser.leftClick(); // click to create annotation
+
+      // drag to rotate
+    browser.buttonDown();
+    browser.moveToObject('canvas', 350, 280);
+    browser.buttonUp();
+
+    expectCanvas(getImageFileForTest(this.test), process.env.RECORD);
+  });
+
+  it('allows to set position on that line after rotation', function () {
+    browser.waitForExist('button=Sphere annotation', 5000);
+    const toolButton = browser.element('button=Sphere annotation');
+    toolButton.click();
+
+    browser.moveToObject('canvas', 250, 250); // move mouse there
+
+    browser.leftClick(); // click to create annotation
+
+      // drag to rotate
+    browser.buttonDown();
+
+    browser.moveToObject('canvas', 350, 280);
+
+    browser.buttonUp();
+    browser.moveToObject('canvas', 200, 220);
+
+    browser.leftClick();
+
+    expectCanvas(getImageFileForTest(this.test), process.env.RECORD);
+  });
+
+  it('allows to set set radius', function () {
+    const toolButton = browser.element('button=Sphere annotation');
+    toolButton.click();
+
+    browser.moveToObject('canvas', 250, 250); // move mouse there
+
+    browser.leftClick(); // click to create annotation
+
+      // drag to rotate
+    browser.buttonDown();
+
+    browser.moveToObject('canvas', 350, 280);
+
+    browser.buttonUp();
+    browser.moveToObject('canvas', 200, 220);
+
+    browser.leftClick();
+
+    browser.moveToObject('canvas', 240, 260);
+
+    expectCanvas(getImageFileForTest(this.test), process.env.RECORD);
+  });
+
+  it('shows an alert when no label is selected on last click', function () {
+    const toolButton = browser.element('button=Sphere annotation');
+    toolButton.click();
+    browser.moveToObject('canvas', 250, 250); // move mouse there
+
+    browser.leftClick(); // click to create annotation
+
+      // drag to rotate
+    browser.buttonDown();
+    browser.moveToObject('canvas', 350, 280);
+
+    browser.buttonUp();
+    browser.moveToObject('canvas', 200, 220);
+
+    browser.leftClick();
+
+    browser.moveToObject('canvas', 240, 260);
+    browser.pause(100);
+
+    browser.leftClick();
+    expect(browser.alertText()).to.equal('Please select a label');
+    browser.pause(200);
+    browser.alertDismiss();
+  });
+
+  it('stores the annotation when label was selected on last click', function () {
+    const { _id } = server.execute(getSampleCaseOnServer);
+    const toolButton = browser.element('button=Sphere annotation');
+    toolButton.click();
+    browser.click('[name=\'label-select\']');
+
+    // we select the second label
+    browser.click('[name=\'label-select\'] .Select-option:nth-child(2)'); // 1-based
+    const actualLabel = server.execute(getLabelsOnServer)[1]; // zero-based
+    browser.moveToObject('canvas', 250, 250); // move mouse there
+
+    browser.leftClick(); // click to create annotation
+      // drag to rotate
+    browser.buttonDown();
+    browser.moveToObject('canvas', 350, 280);
+
+    browser.buttonUp();
+    browser.moveToObject('canvas', 200, 220);
+    browser.leftClick();
+
+    browser.moveToObject('canvas', 240, 260);
+    browser.pause(100);
+
+    browser.leftClick();
+    expectCanvas(getImageFileForTest(this.test), process.env.RECORD);
+    browser.pause(100); // because ui is optimistic, this is not totally easy to find the right time to check on the server
+    const annotations = server.execute(getAnnotationsOnServer, _id);
+    expect(annotations.length).to.equal(1);
+    expect(annotations[0].caseId).to.equal(_id);
+    expect(annotations[0].labelId).to.equal(actualLabel._id);
   });
 });

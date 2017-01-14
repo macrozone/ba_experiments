@@ -5,9 +5,8 @@
 
 
 import expectCanvas from './tools/expect_canvas';
+import getImageFileForTest from './tools/get_image_file_for_test';
 
-
-const RECORD_IMAGE = true;
 
 import waitForLoading from './tools/wait_for_loading';
 
@@ -31,11 +30,10 @@ describe('View a case (sc-102)', function () {
   });
   it('shows title of case on the page', function () {
     const { title } = server.execute(getFirstCaseOnServer);
-
     expect(browser.getText('body')).to.contain(title);
   });
 
   it('renders 3d image on scene of the selected case @watch', function () {
-    expectCanvas('case1', RECORD_IMAGE);
+    expectCanvas(getImageFileForTest(this.test), process.env.RECORD);
   });
 });

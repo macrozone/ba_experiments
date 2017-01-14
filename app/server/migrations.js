@@ -3,6 +3,7 @@ import _ from 'lodash';
 import Labels from '/lib/collections/labels';
 
 import Cases from '/lib/collections/cases';
+import Annotations from '/lib/collections/annotations';
 
 const importSeedDump = (filename, collection) => {
   const entries = _(
@@ -26,6 +27,7 @@ Migrations.add({
   up() {
     importSeedDump('labels.json', Labels);
     importSeedDump('cases.json', Cases);
+    importSeedDump('annotations.json', Annotations);
   },
 });
 

@@ -15,7 +15,6 @@ const getFirstCaseOnServer = () => {
   return Cases.findOne({}, { sort: { title: 1 } });
 };
 
-
 describe('case-select (sc-101)', function () {
   before(function () {
     browser.url('http://localhost:3000/pet3dviewer');
@@ -50,6 +49,7 @@ describe('case-select (sc-101)', function () {
 
   it('allows to navigate to a case on select', function () {
     const { _id } = server.execute(getFirstCaseOnServer);
+
     browser.selectByValue("[name='case-select']", _id);
     const newUrl = browser.getUrl();
     expect(newUrl).to.equal(`http://localhost:3000/pet3dviewer/${_id}`);

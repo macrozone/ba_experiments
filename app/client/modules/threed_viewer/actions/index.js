@@ -68,7 +68,7 @@ export default {
         LocalState.set('pet_3d_viewer.currentAnnotationTool', { ...tool, position });
       } else {
         if (!labelId) {
-          alert('please select a label');
+          alert('Please select a label');
           return;
         }
         const radius = new THREE.Ray().copy(cameraRay).distanceToPoint(tool.position);

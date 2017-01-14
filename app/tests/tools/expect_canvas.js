@@ -2,6 +2,7 @@ import fs from 'fs';
 
 import waitForLoading from './wait_for_loading';
 
+
 const encode = (dataUrl) => {
   const regex = /^data:.+\/(.+);base64,(.*)$/;
   const matches = dataUrl.match(regex);
@@ -12,23 +13,27 @@ const encode = (dataUrl) => {
 const decode = (data) => {
   return `data:image/png;base64,${new Buffer(data, 'binary').toString('base64')}`;
 };
+const readFileAsDataUrl = (path) => {
+  return decode(fs.readFileSync(path));
+};
 export default (testFile, record = false) => {
   browser.waitForExist('canvas', 5000);
-
-  const path = `${process.cwd()}/tests/data/${testFile}.png`;
+  waitForLoading();
+  const path = `${process.cwd()}/tests/regression-images/${testFile}.png`;
 
   const { value: dataUrl } = browser.execute(() => {
     const canvas = document.getElementsByTagName('canvas')[0];
     return canvas.toDataURL('image/png');
   });
   if (record) {
-    const currentContent = fs.existsSync(path) && fs.readFileSync(path, 'utf8');
+    console.warn('recording image');
+    const currentContent = fs.existsSync(path) && readFileAsDataUrl(path);
     if (currentContent !== dataUrl) {
       const buffer = encode(dataUrl);
       fs.writeFileSync(path, buffer);
     }
-    throw Error('Image was recorded, unset RECORD_IMAGE now');
+    throw Error('Image was recorded');
   } else {
-    expect(dataUrl).to.equal(decode(fs.readFileSync(path, 'utf8')));
+    expect(dataUrl).to.equal(readFileAsDataUrl(path));
   }
 };

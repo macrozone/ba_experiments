@@ -5,7 +5,7 @@ import { Rect, Group } from 'react-konva';
 import Polygon from '../components/polygon';
 import Circle from '../components/circle';
 import Bitmap from '../containers/bitmap';
-import _ from 'lodash';
+
 
 const componentMap = {
   circle2d: Circle,

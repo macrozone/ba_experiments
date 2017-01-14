@@ -3,9 +3,11 @@ import LabelSelect from '../components/label_select.jsx';
 
 export const composer = ({ context }, onData) => {
   const { Meteor, Collections, LocalState } = context();
-  const currentLabelId = LocalState.get('labels.currentLabelId');
-  const labels = Collections.Labels.find().fetch();
-  onData(null, { currentLabelId, labels });
+  if (Meteor.subscribe('labels.all').ready()) {
+    const currentLabelId = LocalState.get('labels.currentLabelId');
+    const labels = Collections.Labels.find().fetch();
+    onData(null, { currentLabelId, labels });
+  }
 };
 
 export const depsMapper = (context, actions) => ({

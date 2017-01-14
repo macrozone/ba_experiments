@@ -9,6 +9,7 @@ export const composer = ({ context }, onData) => {
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
+  clearCurrentTool: actions.threedViewer.clearCurrentTool,
   startSphereAnnotation: actions.threedViewer.startSphereAnnotation,
 });
 

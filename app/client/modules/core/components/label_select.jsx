@@ -28,10 +28,11 @@ const optionRenderer = label => (
 );
 
 const Component = ({ styles, labels, setCurrentLabel, currentLabelId }) => (
-  <div style={styles.base}>
+  <div style={styles.base} name="label-select">
     <Select
+
       onChange={(label) => {
-        setCurrentLabel(label._id);
+        setCurrentLabel(label && label._id);
       }}
       optionRenderer={optionRenderer}
       valueRenderer={optionRenderer}

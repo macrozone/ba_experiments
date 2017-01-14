@@ -14,6 +14,9 @@ export default {
     startSphereAnnotation({ LocalState }) {
       LocalState.set('pet_3d_viewer.currentAnnotationTool', { type: 'sphere' });
     },
+    clearCurrentTool({ LocalState }) {
+      LocalState.delete('pet_3d_viewer.currentAnnotationTool');
+    },
     handleAnnotationKeyPress({ LocalState }, event) {
       const tool = LocalState.get('pet_3d_viewer.currentAnnotationTool');
 

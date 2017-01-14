@@ -1,20 +1,19 @@
 import { useDeps, composeAll, composeWithTracker, compose } from 'mantra-core';
-import CaseSelect from '../components/case_select.jsx';
+import CaseLabel from '../components/case_label.jsx';
 
-export const composer = ({ context }, onData) => {
+export const composer = ({ context, caseId }, onData) => {
   const { Meteor, Collections } = context();
   if (Meteor.subscribe('cases.all').ready()) {
-    const cases = Collections.Cases.find({}, { sort: { title: 1 } }).fetch();
-    onData(null, { cases });
+    const theCase = Collections.Cases.findOne(caseId);
+    onData(null, theCase);
   }
 };
 
 export const depsMapper = (context, actions) => ({
   context: () => context,
-  selectCase: actions.cases.select,
 });
 
 export default composeAll(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(CaseSelect);
+)(CaseLabel);

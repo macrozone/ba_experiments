@@ -3,7 +3,8 @@
   "version": "0.5.0",
   "description": "marco-wettstein-ba-experiments",
   "scripts": {
-    "test": "mocha .scripts/mocha_boot.js client/**/tests/**/*.js --compilers js:babel-core/register",
+    "chimp-watch": "chimp --ddp=http://localhost:3000 --watch --mocha --path=tests",
+    "chimp-test": "chimp --ddp=http://localhost:3000 --mocha --path=tests",
     "storybook": "start-storybook -p 9001",
     "start": "meteor --settings settings_dev.json"
   },
@@ -16,7 +17,7 @@
   "dependencies": {
     "babel-runtime": "^6.18.0",
     "bootstrap-sass": "^3.3.7",
-    "color": "^0.11.3",
+    "color": "^1.0.3",
     "faker": "^3.1.0",
     "konva": "^1.2.1",
     "lodash": "^4.15.0",

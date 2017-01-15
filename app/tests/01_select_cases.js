@@ -7,7 +7,7 @@ import waitForLoading from './tools/wait_for_loading';
 
 const getCasesCountOnServer = () => {
   const Cases = require('/lib/collections/cases').default;
-  return Cases.find().count();
+  return Cases.find({ type: 'pet' }).count();
 };
 
 const getFirstCaseOnServer = () => {
@@ -35,7 +35,7 @@ describe('case-select (sc-101)', function () {
     expect(firstOptionText).to.equal('(please select)');
   });
 
-  it('shows all registered cases', function () {
+  it('shows all registered pet-cases', function () {
     const options = browser.elements("[name='case-select'] > option");
     const count = server.execute(getCasesCountOnServer);
     expect(options.value.length).to.equal(count + 1); // first is "please select"

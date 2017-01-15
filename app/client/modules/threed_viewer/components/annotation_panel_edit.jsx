@@ -25,6 +25,7 @@ const Component = ({ styles, setAnnotationLabelId, deleteAnnotation, annotation 
         labelId={annotation.labelId}
       />
       <Button onClick={() => deleteAnnotation(annotation._id)} >Remove Annotation</Button>
+      <Button onClick={() => setAnnotationLabelId(null)} >Unselect Annotation</Button>
     </div>
   );
 };

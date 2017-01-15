@@ -15,12 +15,13 @@ export default () => {
     }
     filenames.forEach(Meteor.bindEnvironment((filename) => {
       if (path.extname(filename) === '.buf') {
+        console.log('importing', filename);
         const basename = path.basename(filename, path.extname(filename));
         const parts = basename.split('_');
         const [depth, width, height] = _.takeRight(parts, 3).map(Number);
 
         const title = _.take(parts, 2).join('_');
-        const type = parts[2];
+        const type = parts.length === 6 ? parts[2] : 'pet';
 
         // find min/max suv values
         fs.readFile(`${dirname}/${filename}`, Meteor.bindEnvironment((error, buffer) => {
@@ -36,7 +37,7 @@ export default () => {
             min,
             max,
           };
-
+          console.log('import case', { type, title });
           Cases.upsert({ type, title }, { $set: { type, title, depth, width, height, data } });
         }));
       }

@@ -9,9 +9,9 @@ import waitForLoading from './tools/wait_for_loading';
 const normalizeColor = color => Color(color).rgb().string();
 
 
-const getFirstCaseOnServer = () => {
+const getSampleCaseOnServer = () => {
   const Cases = require('/lib/collections/cases').default;
-  return Cases.findOne({}, { sort: { title: 1 } });
+  return Cases.findOne({ title: 'STS_012' });
 };
 
 
@@ -24,7 +24,7 @@ const getAllLabelsOnServer = () => {
 describe('Create Annotations (sc-103)', function () {
   beforeEach(waitForLoading);
   before(function () {
-    const { _id } = server.execute(getFirstCaseOnServer);
+    const { _id } = server.execute(getSampleCaseOnServer);
     browser.setViewportSize({
       width: 800,
       height: 600,

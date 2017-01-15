@@ -9,7 +9,7 @@ const Styles = ({ style, ...props }, theme) => {
   return {
     base: [
       {
-
+        marginBottom: 30,
       },
       style, // allow override
     ],

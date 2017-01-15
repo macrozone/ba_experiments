@@ -11,16 +11,16 @@ import getImageFileForTest from './tools/get_image_file_for_test';
 import waitForLoading from './tools/wait_for_loading';
 
 
-const getFirstCaseOnServer = () => {
+const getSampleCaseOnServer = () => {
   const Cases = require('/lib/collections/cases').default;
-  return Cases.findOne({}, { sort: { title: 1 } });
+  return Cases.findOne({ title: 'STS_012' });
 };
 
 
 describe('View a case (sc-102)', function () {
   beforeEach(waitForLoading);
   before(function () {
-    const { _id } = server.execute(getFirstCaseOnServer);
+    const { _id } = server.execute(getSampleCaseOnServer);
     browser.setViewportSize({
       width: 800,
       height: 600,
@@ -29,11 +29,11 @@ describe('View a case (sc-102)', function () {
     waitForLoading();
   });
   it('shows title of case on the page', function () {
-    const { title } = server.execute(getFirstCaseOnServer);
+    const { title } = server.execute(getSampleCaseOnServer);
     expect(browser.getText('body')).to.contain(title);
   });
 
-  it('renders 3d image on scene of the selected case @watch', function () {
+  it('renders 3d image on scene of the selected case', function () {
     expectCanvas(getImageFileForTest(this.test), process.env.RECORD);
   });
 });

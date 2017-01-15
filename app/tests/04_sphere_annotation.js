@@ -11,7 +11,7 @@ import waitForLoading from './tools/wait_for_loading';
 
 const getSampleCaseOnServer = () => {
   const Cases = require('/lib/collections/cases').default;
-  return Cases.findOne('xRsQ5Wk9xcp6Dnfn9');
+  return Cases.findOne({ title: 'STS_012' });
 };
 
 const getAnnotationsOnServer = (caseId) => {

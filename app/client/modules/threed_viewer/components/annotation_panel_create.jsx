@@ -7,7 +7,7 @@ import _ from 'lodash';
 const Styles = ({ style, ...props }, theme) => ({
   base: [
     {
-      marginBottom: 30,
+
     },
     style, // allow override
   ],

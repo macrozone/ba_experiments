@@ -6,7 +6,7 @@ import SelectState from '/client/modules/core/containers/select_state';
 import Slider from '/client/modules/core/containers/slider';
 import withTheme from '/lib/with_theme';
 
-import AnnotationTools from '../containers/annotation_tools';
+import AnnotationPanel from '../containers/annotation_panel';
 import CaseLabel from '../../core/containers/case_label';
 import SelectAxis from '../containers/select_axis';
 import ToggleAxesButton from '../containers/toggle_axes_button';
@@ -48,7 +48,7 @@ const Component = ({ styles, caseId, theCase, setCase }) => {
 
       {caseId && <CaseLabel caseId={caseId} />}
 
-      <AnnotationTools />
+      <AnnotationPanel caseId={caseId} />
 
       <ToggleAxesButton />
 

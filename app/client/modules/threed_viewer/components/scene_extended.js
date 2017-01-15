@@ -35,24 +35,24 @@ Scene.prototype.projectPointerEvent = function (event, eventName, canvas) {
     return; // prevent pointer events if orbit is rotating
   }
   event.preventDefault();
-  var rect = canvas.getBoundingClientRect();
+  const rect = canvas.getBoundingClientRect();
 
-  const {clientX, clientY} = event.touches ? event.touches[0] : event;
-  var x = ( (clientX - rect.left) / rect.width) * 2 - 1;
-  var y = -( (clientY - rect.top) / rect.height) * 2 + 1;
+  const { clientX, clientY } = event.touches ? event.touches[0] : event;
+  const x = ((clientX - rect.left) / rect.width) * 2 - 1;
+  const y = -((clientY - rect.top) / rect.height) * 2 + 1;
 
-  var mousecoords = new THREE.Vector3(x,y,0.5);
+  const mousecoords = new THREE.Vector3(x, y, 0.5);
   let { raycaster, camera } = this._THREEMetaData;
 
   raycaster.setFromCamera(mousecoords, camera);
   if (eventName === 'onClick') {
     if (_.isFunction(this._currentElement.props.onClickRay)) {
-      this._currentElement.props.onClickRay(event, raycaster.ray, {x,y});
+      this._currentElement.props.onClickRay(event, raycaster, { x, y });
     }
   }
   if (eventName === 'onMouseMove') {
     if (_.isFunction(this._currentElement.props.onMouseMoveRay)) {
-      this._currentElement.props.onMouseMoveRay(event, raycaster.ray, {x,y});
+      this._currentElement.props.onMouseMoveRay(event, raycaster, { x, y });
     }
   }
 };

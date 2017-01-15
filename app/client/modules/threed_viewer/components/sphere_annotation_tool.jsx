@@ -73,7 +73,7 @@ export const Ray = ({ direction, origin }) => {
   );
 };
 
-const getMode = ({ ray, position }) => {
+const getMode = ({ ray, position } = {}) => {
   if (ray) {
     // has ray
     if (position) {

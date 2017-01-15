@@ -6,9 +6,11 @@ import THREE from 'three';
 export default {
 
   threedViewer: {
-
-    setCameraRay({ LocalState }, ray) {
-      LocalState.set('pet_3_d_viewer.cameraRay', ray);
+    selectAnnotation({ LocalState }, annotationId) {
+      LocalState.set('pet_3_d_viewer.selectedAnnotationId', annotationId);
+    },
+    setCameraRay({ LocalState }, ray, clicked = false) {
+      LocalState.set('pet_3_d_viewer.cameraRay', { ...ray, clicked });
     },
     showModelLoadingMessage({ LocalState }) {
       LocalState.set('pet_3d_viewer.modelIsLoaded', false);
@@ -42,13 +44,16 @@ export default {
     },
     handleAnnotationToolClick({ FlowRouter, Collections: { Annotations }, LocalState }, ray) {
       const tool = LocalState.get('pet_3d_viewer.currentAnnotationTool');
+
       const labelId = LocalState.get('labels.currentLabelId');
       const caseId = FlowRouter.getParam('caseId');
       if (!caseId) {
         alert('Please select a case');
         return;
       }
-      // TODO: check type
+      if (!tool || !tool.type) {
+        return;
+      }
       const cameraRay = LocalState.get('pet_3_d_viewer.cameraRay');
       const camera = LocalState.get('pet_3_d_viewer.camera');
 
@@ -88,5 +93,11 @@ export default {
       LocalState.set('pet_3_d_viewer.camera', { position, quaternion, rotation });
     },
 
+    setAnnotationLabelId({ Collections: { Annotations } }, annotationId, labelId) {
+      Annotations.update(annotationId, { $set: { labelId } });
+    },
+    deleteAnnotation({ Collections: { Annotations } }, annotationId) {
+      Annotations.remove(annotationId);
+    },
   },
 };

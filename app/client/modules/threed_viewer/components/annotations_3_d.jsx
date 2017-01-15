@@ -1,23 +1,20 @@
+import { Mesh, Object3D } from 'react-three';
 import React from 'react';
-
 import THREE from 'three';
-import { Renderer, Scene, Mesh, Line, Object3D } from 'react-three';
 
-const Annotations3D = ({ annotationsWithLabels }) => (
+import Annotation3DSphere from '../containers/annotation_3_d_sphere';
+
+const Annotations3D = ({ selectAnnotation, selectedAnnotationId, annotationsWithLabels }) => (
   <Object3D>
     {
       annotationsWithLabels.map(
-        ({ annotation, label }) => (
-          <Mesh
-            position={annotation.props.position}
-            geometry={new THREE.SphereBufferGeometry(annotation.props.radius, 32, 32)}
-            material={new THREE.MeshBasicMaterial({
-              color: new THREE.Color(label && label.color),
-              opacity: 0.5,
-              transparent: true,
-              depthTest: false,
-              blending: THREE.NormalBlending,
-            })}
+        ({ annotation, label }, index) => (
+          <Annotation3DSphere
+            key={index}
+            annotation={annotation}
+            label={label}
+            isSelected={selectedAnnotationId === annotation._id}
+            onClick={() => selectAnnotation(annotation._id)}
           />
         )
       )

@@ -73,7 +73,7 @@ export const Ray = ({ direction, origin }) => {
   );
 };
 
-const getMode = ({ ray, position } = {}) => {
+const getMode = ({ ray, position }) => {
   if (ray) {
     // has ray
     if (position) {
@@ -85,7 +85,10 @@ const getMode = ({ ray, position } = {}) => {
   return 'settingRay';
 };
 
-const SphereAnnotationTool = ({ cameraRay, camera, sphereAnnotationTool = {} }) => {
+const SphereAnnotationTool = ({ cameraRay, camera, sphereAnnotationTool }) => {
+  if (!sphereAnnotationTool) {
+    return <Object3D />;
+  }
   const mode = getMode(sphereAnnotationTool);
   const cameraRayT = new THREE.Ray().copy(cameraRay);
 

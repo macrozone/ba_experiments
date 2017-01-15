@@ -21,7 +21,6 @@ const Annotation3DSphere = ({ annotation, label, intersected, checkIntersection,
           intersected ? Color(label.color).lighten(0.75).rgb().string() :
           label.color
         )
-
       ),
       opacity: 0.5,
       transparent: true,

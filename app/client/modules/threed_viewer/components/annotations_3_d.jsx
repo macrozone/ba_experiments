@@ -1,6 +1,6 @@
 import { Mesh, Object3D } from 'react-three';
 import React from 'react';
-import THREE from 'three';
+
 
 import Annotation3DSphere from '../containers/annotation_3_d_sphere';
 
@@ -8,15 +8,19 @@ const Annotations3D = ({ selectAnnotation, selectedAnnotationId, annotationsWith
   <Object3D>
     {
       annotationsWithLabels.map(
-        ({ annotation, label }, index) => (
-          <Annotation3DSphere
-            key={index}
-            annotation={annotation}
-            label={label}
-            isSelected={selectedAnnotationId === annotation._id}
-            onClick={() => selectAnnotation(annotation._id)}
-          />
-        )
+        ({ annotation, label }, index) => {
+          const isSelected = selectedAnnotationId === annotation._id;
+          return (
+            <Annotation3DSphere
+              key={index}
+              annotation={annotation}
+              label={label}
+              isSelected={isSelected}
+              // toggle
+              onClick={() => selectAnnotation(isSelected ? null : annotation._id)}
+            />
+        );
+        }
       )
     }
   </Object3D>

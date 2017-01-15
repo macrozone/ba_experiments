@@ -4,21 +4,20 @@
 /* eslint import/newline-after-import: 0*/
 
 
-import expectCanvas from './tools/expect_canvas';
-import getImageFileForTest from './tools/get_image_file_for_test';
+import expectCanvas from './inc/expect_canvas';
+import getImageFileForTest from './inc/get_image_file_for_test';
 
 
-import waitForLoading from './tools/wait_for_loading';
+import waitForLoading from './inc/wait_for_loading';
 
-
-const getSampleCaseOnServer = () => {
-  const Cases = require('/lib/collections/cases').default;
-  return Cases.findOne({ title: 'STS_012' });
-};
+import { getSampleCaseOnServer, clearAnnotationsOnServer } from './inc/server_data';
 
 
 describe('View a case (sc-102)', function () {
   beforeEach(waitForLoading);
+  beforeEach(function () {
+    server.execute(clearAnnotationsOnServer);
+  });
   before(function () {
     const { _id } = server.execute(getSampleCaseOnServer);
     browser.setViewportSize({

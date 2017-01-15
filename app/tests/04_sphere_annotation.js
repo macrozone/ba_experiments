@@ -4,31 +4,11 @@
 /* eslint import/newline-after-import: 0*/
 
 
-import expectCanvas from './tools/expect_canvas';
-import getImageFileForTest from './tools/get_image_file_for_test';
-import waitForLoading from './tools/wait_for_loading';
+import expectCanvas from './inc/expect_canvas';
+import getImageFileForTest from './inc/get_image_file_for_test';
+import waitForLoading from './inc/wait_for_loading';
 
-
-const getSampleCaseOnServer = () => {
-  const Cases = require('/lib/collections/cases').default;
-  return Cases.findOne({ title: 'STS_012' });
-};
-
-const getAnnotationsOnServer = (caseId) => {
-  const Annotations = require('/lib/collections/annotations').default;
-  return Annotations.find({ caseId }).fetch();
-};
-
-const getLabelsOnServer = () => {
-  const Labels = require('/lib/collections/labels').default;
-  return Labels.find({}, { sort: { position: 1 } }).fetch();
-};
-
-const clearAnnotationsOnServer = () => {
-  const Annotations = require('/lib/collections/annotations').default;
-  Annotations.remove({});
-};
-
+import { clearAnnotationsOnServer, getSampleCaseOnServer, getAllLabelsOnServer, getAnnotationsOnServer } from './inc/server_data';
 
 describe('Sphere annotation tool', function () {
   beforeEach(function () {
@@ -133,7 +113,6 @@ describe('Sphere annotation tool', function () {
     const toolButton = browser.element('button=Sphere annotation');
     toolButton.click();
     browser.moveToObject('canvas', 250, 250); // move mouse there
-
     browser.leftClick(); // click to create annotation
 
       // drag to rotate
@@ -162,7 +141,7 @@ describe('Sphere annotation tool', function () {
 
     // we select the second label
     browser.click('[name=\'label-select\'] .Select-option:nth-child(2)'); // 1-based
-    const actualLabel = server.execute(getLabelsOnServer)[1]; // zero-based
+    const actualLabel = server.execute(getAllLabelsOnServer)[1]; // zero-based
     browser.moveToObject('canvas', 250, 250); // move mouse there
 
     browser.leftClick(); // click to create annotation
@@ -179,7 +158,9 @@ describe('Sphere annotation tool', function () {
 
     browser.leftClick();
     expectCanvas(getImageFileForTest(this.test), process.env.RECORD);
-    browser.pause(100); // because ui is optimistic, this is not totally easy to find the right time to check on the server
+    browser.pause(500); // because ui is optimistic, this is not totally easy to find the right time to check on the server
+
+
     const annotations = server.execute(getAnnotationsOnServer, _id);
     expect(annotations.length).to.equal(1);
     expect(annotations[0].caseId).to.equal(_id);

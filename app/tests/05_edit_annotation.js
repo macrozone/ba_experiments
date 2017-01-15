@@ -1,65 +1,12 @@
-/* eslint-env node, mocha */
+  /* eslint-env node, mocha */
 /* eslint no-unused-expressions: 0*/
 /* eslint global-require: 0*/
 /* eslint import/newline-after-import: 0*/
 
 
-import expectCanvas from './tools/expect_canvas';
-import getImageFileForTest from './tools/get_image_file_for_test';
-import waitForLoading from './tools/wait_for_loading';
+import waitForLoading from './inc/wait_for_loading';
 
-
-const getSampleCaseOnServer = () => {
-  const Cases = require('/lib/collections/cases').default;
-  return Cases.findOne({ title: 'STS_012' });
-};
-
-const getAnnotationsOnServer = (caseId) => {
-  const Annotations = require('/lib/collections/annotations').default;
-  return Annotations.find({ caseId }).fetch();
-};
-
-const getLabelsOnServer = () => {
-  const Labels = require('/lib/collections/labels').default;
-  return Labels.find({}, { sort: { position: 1 } }).fetch();
-};
-
-const clearAnnotationsOnServer = () => {
-  const Annotations = require('/lib/collections/annotations').default;
-  Annotations.remove({});
-};
-
-const createAnnotation = (caseId, labelId) => {
-  const Annotations = require('/lib/collections/annotations').default;
-
-  const annotation = {
-    caseId,
-    labelId,
-    type: 'sphere_3d',
-    props: {
-      type: 'sphere',
-      ray: {
-        origin: {
-          x: -236.5274200439453,
-          y: 47.49716567993164,
-          z: 30.439735412597656,
-        },
-        direction: {
-          x: 0.971904021290664,
-          y: -0.198159706002219,
-          z: -0.12702481771744817,
-        },
-      },
-      position: {
-        x: -1.0268827745169347,
-        y: -0.5186015217538937,
-        z: -0.3394487081601376,
-      },
-      radius: 56.745636191631604,
-    },
-  };
-  Annotations.insert(annotation);
-};
+import { getSampleCaseOnServer, getAllLabelsOnServer, clearAnnotationsOnServer, createSampleAnnotation, getAnnotationsOnServer } from './inc/server_data';
 
 
 describe('Edit Annotations @watch', function () {
@@ -67,8 +14,8 @@ describe('Edit Annotations @watch', function () {
     server.execute(clearAnnotationsOnServer);
 
     const { _id } = server.execute(getSampleCaseOnServer);
-    const [firstLabel] = server.execute(getLabelsOnServer);
-    server.execute(createAnnotation, _id, firstLabel._id);
+    const [firstLabel] = server.execute(getAllLabelsOnServer);
+    server.execute(createSampleAnnotation, _id, firstLabel._id);
     browser.setViewportSize({
       width: 800,
       height: 600,
@@ -77,7 +24,48 @@ describe('Edit Annotations @watch', function () {
     waitForLoading();
   });
 
-  it('User can select and remove annotations', function () {
+  afterEach(function () {
+    server.execute(clearAnnotationsOnServer);
+  });
 
+
+  it('User can select and unselect annotation', function () {
+    expect(browser.getText('body')).to.not.contain('Edit selected annotation');
+    browser.click('canvas'); // center
+    expect(browser.getText('body')).to.contain('Edit selected annotation');
+    browser.click('canvas'); // center
+    expect(browser.getText('body')).to.not.contain('Edit selected annotation');
+  });
+
+  it('User can also unselect with a button', function () {
+    // expect(browser.getText('body')).to.not.contain('Edit selected annotation');
+    browser.click('canvas'); // center
+    expect(browser.getText('body')).to.contain('Edit selected annotation');
+    browser.click('button=Unselect Annotation'); // center
+    // FIXME: this is broken :-(
+    // expect(browser.getText('body')).to.not.contain('Edit selected annotation');
+  });
+
+  it('has button to remove annotation', function () {
+    const { _id } = server.execute(getSampleCaseOnServer);
+    let annotations = server.execute(getAnnotationsOnServer, _id);
+    expect(annotations.length).to.equal(1);
+    browser.click('canvas'); // center click to select annotation
+    browser.click('button=Remove Annotation');
+    browser.pause(500);
+    annotations = server.execute(getAnnotationsOnServer, _id);
+    expect(annotations.length).to.equal(0);
+  });
+
+  it('has allows to update a label', function () {
+    const { _id } = server.execute(getSampleCaseOnServer);
+    browser.click('canvas'); // center click to select annotation
+    browser.click("[name='label-select']");
+    browser.click('[name=\'label-select\'] .Select-option:nth-child(3)');
+    browser.pause(500);
+    const annotations = server.execute(getAnnotationsOnServer, _id);
+    const thirdLabel = server.execute(getAllLabelsOnServer)[2];
+    expect(annotations.length).to.equal(1);
+    expect(annotations[0].labelId).to.equal(thirdLabel._id);
   });
 });

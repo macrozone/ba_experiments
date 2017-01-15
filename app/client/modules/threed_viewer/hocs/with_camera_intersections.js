@@ -19,13 +19,14 @@ export const depsMapper = (context, actions) => ({
 
 export default ThreeC => composeAll(
   withHandlers({
-    checkIntersection: ({ raycaster, intersected, setIntersected, clicked, onClick }) => (mesh) => {
+    checkIntersection: ({ raycaster, intersected, setIntersected, clicked, clickSent, setClickSent, onClick }) => (mesh) => {
       if (mesh) {
         const intersections = [];
         mesh.raycast(raycaster, intersections);
         if (intersections.length > 0) {
-          if (clicked && onClick) {
+          if (clicked && clicked !== clickSent && onClick) {
             onClick();
+            setClickSent(clicked); // timestamp
           }
           if (!intersected) {
             setIntersected(true);
@@ -36,6 +37,7 @@ export default ThreeC => composeAll(
       }
     },
   }),
+  withState('clickSent', 'setClickSent', false),
   withState('intersected', 'setIntersected', false),
   composeWithTracker(rayCasterComposer),
   useDeps(depsMapper)

@@ -151,7 +151,7 @@ describe('Sphere annotation tool', function () {
     browser.leftClick();
     expect(browser.alertText()).to.equal('Please select a label');
     browser.pause(200);
-    browser.alertDismiss();
+    browser.alertAccept();
   });
 
   it('stores the annotation when label was selected on last click', function () {

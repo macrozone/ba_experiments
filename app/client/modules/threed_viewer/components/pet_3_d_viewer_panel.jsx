@@ -18,13 +18,24 @@ const Styles = ({ style, ...props }, theme) => ({
     },
     style, // allow override
   ],
+  loading: {
+    color: 'white',
+  },
 });
 
-const Component = ({ styles, caseId, setCase }) => {
+const Component = ({ styles, caseId, theCase, setCase }) => {
   if (!caseId) {
     return (
       <div style={styles.base}>
-        <CaseSelect onChange={setCase} />
+        <CaseSelect type="pet" onChange={setCase} />
+      </div>
+    );
+  }
+
+  if (!theCase) {
+    return (
+      <div style={styles.base}>
+        <p style={styles.loading}>Loading...</p>
       </div>
     );
   }
@@ -33,7 +44,7 @@ const Component = ({ styles, caseId, setCase }) => {
     <div style={styles.base}>
 
 
-      <CaseSelect caseId={caseId} onChange={setCase} />
+      <CaseSelect type="pet" caseId={caseId} onChange={setCase} />
 
       {caseId && <CaseLabel caseId={caseId} />}
 
@@ -44,17 +55,17 @@ const Component = ({ styles, caseId, setCase }) => {
       <h2>PET settings</h2>
       <Slider
         label="minSuv"
-        max={0.01}
-        min={0.00001}
-        step={0.00001}
+        max={theCase.data.max || 0.01}
+        min={theCase.data.min || 0.00001}
+        step={(theCase.data.max - theCase.data.min) / 1000}
         localState="pet_3_d_viewer.min_suv"
         debounce={300}
       />
       <Slider
         label="maxSuv"
-        max={0.01}
-        min={0.00001}
-        step={0.00001}
+        max={theCase.data.max || 0.01}
+        min={theCase.data.min || 0.00001}
+        step={(theCase.data.max - theCase.data.min) / 1000}
         localState="pet_3_d_viewer.max_suv"
         debounce={300}
       />

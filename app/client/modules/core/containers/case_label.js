@@ -3,7 +3,7 @@ import CaseLabel from '../components/case_label.jsx';
 
 export const composer = ({ context, caseId }, onData) => {
   const { Meteor, Collections } = context();
-  if (Meteor.subscribe('cases.all').ready()) {
+  if (Meteor.subscribe('cases.one', caseId).ready()) {
     const theCase = Collections.Cases.findOne(caseId);
     onData(null, theCase);
   }

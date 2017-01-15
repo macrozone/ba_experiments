@@ -16,7 +16,7 @@ const Annotations3D = ({ annotationsWithLabels }) => (
               opacity: 0.5,
               transparent: true,
               depthTest: false,
-              blending: THREE.AdditiveBlending,
+              blending: THREE.NormalBlending,
             })}
           />
         )

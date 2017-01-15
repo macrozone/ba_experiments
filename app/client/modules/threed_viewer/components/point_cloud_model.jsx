@@ -4,7 +4,7 @@ import _ from 'lodash';
 import THREE from 'three';
 import petPalette from '/lib/palettes/pet';
 
-const Y_SCALE = 0.5; // data is scaled in this direction // TODO: find correct value
+const Y_SCALE = 1; // data is scaled in this direction // TODO: find correct value
 
 const PointCloudModel = class extends React.Component {
   constructor() {
@@ -16,7 +16,7 @@ const PointCloudModel = class extends React.Component {
   }
   componentDidMount() {
     const oReq = new XMLHttpRequest();
-    const url = `/data${this.props.currentCase.data}`;
+    const url = `/data${this.props.currentCase.data.file}`;
     oReq.open('GET', url, true);
     oReq.responseType = 'arraybuffer';
     _.invoke(this.props, 'onLoadStart');
@@ -24,6 +24,7 @@ const PointCloudModel = class extends React.Component {
       const arrayBuffer = oReq.response; // Note: not oReq.responseText
       if (arrayBuffer) {
         const byteArray = new Float32Array(arrayBuffer);
+
         this.setState({ data: byteArray });
         _.invoke(this.props, 'onLoadFinish');
       }
@@ -69,6 +70,7 @@ const PointCloudModel = class extends React.Component {
       for (let i = 0; i < this.state.data.byteLength; i++) {
         const valueRaw = this.state.data[i] || 0.0; // some are undefined, TODO: find out why
         const value = valueRaw;
+
         // we ommit pixels below min treshhold (Because they are rendered black)
         // but show pixels over the max treshhold
 
@@ -76,7 +78,7 @@ const PointCloudModel = class extends React.Component {
           const clusterIndex = getClusterIndex(value);
           const x = i % width;
           const z = Math.floor(i / width) % height;
-          const y = -Math.floor(i / (width * height)) * Y_SCALE; // is swapped
+          const y = Math.floor(i / (width * height)) * Y_SCALE;
           clusters[clusterIndex].geometry.vertices.push({ x, y, z });
         }
       }
@@ -84,7 +86,7 @@ const PointCloudModel = class extends React.Component {
 
     return (
       <Object3D
-        position={new THREE.Vector3(-width / 2, depth * Y_SCALE / 2, -height / 2)}
+        position={new THREE.Vector3(-width / 2, -depth * Y_SCALE / 2, -height / 2)}
       >
         { clusters.map(({ material, geometry }, index) => (
           <PointCloud

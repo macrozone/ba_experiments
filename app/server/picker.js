@@ -15,7 +15,6 @@ Picker.route('/data/:path*', function (params, req, res) {
     }
     res.writeHead(200, {
       'Content-Type': 'application/octet-stream',
-
     });
    // stream the file
 

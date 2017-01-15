@@ -4,6 +4,7 @@ import Labels from '/lib/collections/labels';
 
 import Cases from '/lib/collections/cases';
 import Annotations from '/lib/collections/annotations';
+import importBuffers from './import_buffers';
 
 const importSeedDump = (filename, collection) => {
   const entries = _(
@@ -22,12 +23,14 @@ const importSeedDump = (filename, collection) => {
   entries.forEach(doc => collection.insert(doc, { validate: false }));
 };
 
+
 Migrations.add({
   version: 1,
   up() {
     importSeedDump('labels.json', Labels);
     importSeedDump('cases.json', Cases);
     importSeedDump('annotations.json', Annotations);
+    importBuffers();
   },
 });
 

@@ -98,12 +98,13 @@ const Pet3DViewer = class extends React.Component {
               onOrbit={(theCamera) => {
                 this.props.setCamera(theCamera);
               }}
-              onMouseMoveRay={(event, ray) => {
-                this.props.setCameraRay(ray);
+              onMouseMoveRay={(event, raycaster) => {
+                this.props.setCameraRay(raycaster.ray);
               }}
             // is called twice :-/
             // so debounce it.
-              onClickRay={_.debounce((event, ray) => {
+              onClickRay={_.debounce((event, { ray }) => {
+                this.props.setCameraRay(ray, new Date().getTime());
                 this.props.handleAnnotationToolClick(ray);
               }, 100, { leading: true, trailing: false })}
             >

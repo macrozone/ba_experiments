@@ -4,39 +4,31 @@
 /* eslint import/newline-after-import: 0*/
 import Color from 'color';
 
-import waitForLoading from './tools/wait_for_loading';
+import waitForLoading from './inc/wait_for_loading';
+
+import { getSampleCaseOnServer, getAllLabelsOnServer } from './inc/server_data';
 
 const normalizeColor = color => Color(color).rgb().string();
-
-
-const getFirstCaseOnServer = () => {
-  const Cases = require('/lib/collections/cases').default;
-  return Cases.findOne({}, { sort: { title: 1 } });
-};
-
-
-const getAllLabelsOnServer = () => {
-  const Labels = require('/lib/collections/labels').default;
-  return Labels.find().fetch();
-};
 
 
 describe('Create Annotations (sc-103)', function () {
   beforeEach(waitForLoading);
   before(function () {
-    const { _id } = server.execute(getFirstCaseOnServer);
+    const { _id } = server.execute(getSampleCaseOnServer);
     browser.setViewportSize({
       width: 800,
       height: 600,
     });
     browser.url(`http://localhost:3000/pet3dviewer/${_id}`);
   });
-  describe('label select-field', function () {
+  describe('AnnotationPanel', function () {
+    it('shows Create Annotation title initially', function () {
+      expect(browser.getText('body')).to.contain('Create Annotation:');
+    });
     it('app has a label-select field', function () {
       const doesExist = browser.waitForExist("[name='label-select']", 5000);
       expect(doesExist).to.be.true;
     });
-
 
     it('shows all registered labels on click with name and color (its a searchable select field)', function () {
       browser.click("[name='label-select']");

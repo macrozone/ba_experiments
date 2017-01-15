@@ -7,7 +7,7 @@ import _ from 'lodash';
 const Styles = ({ style, ...props }, theme) => ({
   base: [
     {
-      marginBottom: 30,
+
     },
     style, // allow override
   ],
@@ -22,10 +22,10 @@ const Styles = ({ style, ...props }, theme) => ({
 
 const alreadySelected = (currentTool, type) => _.get(currentTool, 'type') === type;
 
-const Component = ({ styles, startSphereAnnotation, currentAnnotationTool, clearCurrentTool }) => (
+const Component = ({ styles, startSphereAnnotation, currentAnnotationTool, clearCurrentTool, setCurrentLabel, currentLabelId }) => (
   <div style={styles.base}>
     <p style={styles.title}>Create Annotation:</p>
-    <LabelSelect />
+    <LabelSelect onChange={setCurrentLabel} labelId={currentLabelId} />
     <div style={styles.toolButtons}>
       <Button
 
@@ -45,14 +45,14 @@ const Component = ({ styles, startSphereAnnotation, currentAnnotationTool, clear
   </div>
   );
 
-const AnnotationTools = withTheme(Styles, Component);
+const AnnotationPanelCreate = withTheme(Styles, Component);
 
-AnnotationTools.propTypes = {
+AnnotationPanelCreate.propTypes = {
 };
 
-AnnotationTools.defaultProps = {
+AnnotationPanelCreate.defaultProps = {
 };
 
-AnnotationTools.displayName = 'AnnotationTools';
-Component.displayName = 'withTheme(AnnotationTools)';
-export default AnnotationTools;
+AnnotationPanelCreate.displayName = 'AnnotationPanelCreate';
+Component.displayName = 'withTheme(AnnotationPanelCreate)';
+export default AnnotationPanelCreate;

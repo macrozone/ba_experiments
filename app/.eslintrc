@@ -26,6 +26,7 @@
     "faker": true
   },
   "rules": {
+    "import/newline-after-import": 0,
     "arrow-body-style": [1, "as-needed"],
     "no-unused-vars": ["warn"],
     "react/prop-types": ["warn"],

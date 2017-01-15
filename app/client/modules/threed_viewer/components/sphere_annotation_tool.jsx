@@ -85,7 +85,10 @@ const getMode = ({ ray, position }) => {
   return 'settingRay';
 };
 
-const SphereAnnotationTool = ({ cameraRay, camera, sphereAnnotationTool = {} }) => {
+const SphereAnnotationTool = ({ cameraRay, camera, sphereAnnotationTool }) => {
+  if (!sphereAnnotationTool) {
+    return <Object3D />;
+  }
   const mode = getMode(sphereAnnotationTool);
   const cameraRayT = new THREE.Ray().copy(cameraRay);
 

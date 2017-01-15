@@ -34,6 +34,6 @@ export default (testFile, record = false) => {
     }
     throw Error('Image was recorded');
   } else {
-    expect(dataUrl).to.equal(readFileAsDataUrl(path));
+    expect(dataUrl === readFileAsDataUrl(path)).to.equal(true, 'images do not match');
   }
 };

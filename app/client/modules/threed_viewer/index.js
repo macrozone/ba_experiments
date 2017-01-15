@@ -6,6 +6,11 @@ export default {
   routes,
   actions,
   load({ LocalState }) {
+    // global blinker
+    window.setInterval(() => {
+      const blink = LocalState.get('pet_3_d_viewer.blink');
+      LocalState.set('pet_3_d_viewer.blink', !blink);
+    }, 300);
     LocalState.set('pet_3_d_viewer.opacity', 1);
 
     LocalState.set('pet_3_d_viewer.min_suv', 0.0001);

@@ -27,16 +27,16 @@ const optionRenderer = label => (
   </span>
 );
 
-const Component = ({ styles, labels, setCurrentLabel, currentLabelId }) => (
+const Component = ({ styles, labels, onChange, labelId }) => (
   <div style={styles.base} name="label-select">
     <Select
 
       onChange={(label) => {
-        setCurrentLabel(label && label._id);
+        onChange(label && label._id);
       }}
       optionRenderer={optionRenderer}
       valueRenderer={optionRenderer}
-      value={labels.find(l => l._id === currentLabelId)} options={labels}
+      value={labels.find(l => l._id === labelId)} options={labels}
     />
   </div>
   );

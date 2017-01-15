@@ -3,17 +3,10 @@
 /* eslint global-require: 0*/
 /* eslint import/newline-after-import: 0*/
 
-import waitForLoading from './tools/wait_for_loading';
+import waitForLoading from './inc/wait_for_loading';
 
-const getCasesCountOnServer = () => {
-  const Cases = require('/lib/collections/cases').default;
-  return Cases.find().count();
-};
 
-const getFirstCaseOnServer = () => {
-  const Cases = require('/lib/collections/cases').default;
-  return Cases.findOne({}, { sort: { title: 1 } });
-};
+import { getCasesCountOnServer, getFirstCaseOnServer } from './inc/server_data';
 
 describe('case-select (sc-101)', function () {
   before(function () {
@@ -35,7 +28,7 @@ describe('case-select (sc-101)', function () {
     expect(firstOptionText).to.equal('(please select)');
   });
 
-  it('shows all registered cases', function () {
+  it('shows all registered pet-cases', function () {
     const options = browser.elements("[name='case-select'] > option");
     const count = server.execute(getCasesCountOnServer);
     expect(options.value.length).to.equal(count + 1); // first is "please select"

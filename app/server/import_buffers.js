@@ -38,7 +38,8 @@ export default () => {
             max,
           };
           console.log('import case', { type, title });
-          Cases.upsert({ type, title }, { $set: { type, title, depth, width, height, data } });
+          const _id = `${title}_${type}`;
+          Cases.upsert({ _id }, { $set: { type, title, depth, width, height, data } });
         }));
       }
     }));

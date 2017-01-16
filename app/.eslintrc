@@ -32,6 +32,7 @@
     "react/prop-types": ["warn"],
     "react/display-name": ["warn"],
     "max-len": ["error", 250],
+    "no-plusplus": 0,
     "new-cap": [
       2,
       {

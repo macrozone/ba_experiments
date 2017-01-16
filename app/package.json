@@ -26,6 +26,7 @@
     "mantra-core": "^1.7.0",
     "meteor-node-stubs": "^0.2.3",
     "mime-types": "^2.1.12",
+    "node-gd": "^1.4.0",
     "radium": "^0.18.1",
     "react": "~15.4.1",
     "react-bootstrap": "^0.30.3",

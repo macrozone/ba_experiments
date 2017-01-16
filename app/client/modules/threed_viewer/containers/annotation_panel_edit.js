@@ -11,6 +11,7 @@ export const depsMapper = (context, actions) => ({
   context: () => context,
   deleteAnnotation: actions.threedViewer.deleteAnnotation,
   setAnnotationLabelId: actions.threedViewer.setAnnotationLabelId,
+  selectAnnotation: actions.threedViewer.selectAnnotation,
 });
 
 export default composeAll(

@@ -3,6 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
 
+import { bufferToArray } from './buffer_utils';
+
 import Cases from '/lib/collections/cases';
 export default () => {
   const { assetPath } = Meteor.settings;
@@ -28,8 +30,7 @@ export default () => {
           if (error) {
             throw new Error(error);
           }
-          const arrayBuffer = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
-          const array = new Float32Array(arrayBuffer);
+          const array = bufferToArray(buffer);
           const min = _.min(array);
           const max = _.max(array);
           const data = {

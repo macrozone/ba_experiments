@@ -9,7 +9,7 @@ import waitForLoading from './inc/wait_for_loading';
 import { getSampleCaseOnServer, getAllLabelsOnServer, clearAnnotationsOnServer, createSampleAnnotation, getAnnotationsOnServer } from './inc/server_data';
 
 
-describe('Edit Annotations @watch', function () {
+describe('Edit Annotations', function () {
   beforeEach(function () {
     server.execute(clearAnnotationsOnServer);
 
@@ -37,13 +37,12 @@ describe('Edit Annotations @watch', function () {
     expect(browser.getText('body')).to.not.contain('Edit selected annotation');
   });
 
-  it('User can also unselect with a button', function () {
-    // expect(browser.getText('body')).to.not.contain('Edit selected annotation');
+  it('User can also unselect with a button @watch', function () {
+    expect(browser.getText('body')).to.not.contain('Edit selected annotation');
     browser.click('canvas'); // center
     expect(browser.getText('body')).to.contain('Edit selected annotation');
     browser.click('button=Unselect Annotation'); // center
-    // FIXME: this is broken :-(
-    // expect(browser.getText('body')).to.not.contain('Edit selected annotation');
+    expect(browser.getText('body')).to.not.contain('Edit selected annotation');
   });
 
   it('has button to remove annotation', function () {
@@ -57,7 +56,7 @@ describe('Edit Annotations @watch', function () {
     expect(annotations.length).to.equal(0);
   });
 
-  it('has allows to update a label', function () {
+  it('allows to update a label', function () {
     const { _id } = server.execute(getSampleCaseOnServer);
     browser.click('canvas'); // center click to select annotation
     browser.click("[name='label-select']");

@@ -7,8 +7,12 @@ export default {
 
   threedViewer: {
     selectAnnotation({ LocalState }, annotationId) {
-      console.log('selectAnnotation', annotationId);
-      LocalState.set('pet_3_d_viewer.selectedAnnotationId', annotationId);
+      const tool = LocalState.get('pet_3d_viewer.currentAnnotationTool');
+
+      // only allow if no tool is present
+      if (_.isEmpty(tool)) {
+        LocalState.set('pet_3_d_viewer.selectedAnnotationId', annotationId);
+      }
     },
     setCameraRay({ LocalState }, ray, clicked = false) {
       LocalState.set('pet_3_d_viewer.cameraRay', { ...ray, clicked });

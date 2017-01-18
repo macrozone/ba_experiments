@@ -5,10 +5,12 @@ import CircleToolEvents from '../libs/circle_tool_events';
 import SuperpixelsToolEvents from '../libs/superpixels_tool_events';
 
 export const composer = ({ context, segmentation, createAnnotation, updateAnnotation, stopEditingCurrentAnnotation }, onData) => {
-  const { LocalState, Collections } = context();
+  const { Meteor, LocalState, Collections } = context();
 
   const currentEditingAnnotationId = LocalState.get('annotations.currentEditingAnnotationId');
-  const annotations = Collections.Annotations.find({ caseId: '2d-sample-app' }).fetch();
+  const caseId = '2d-sample-app';
+  Meteor.subscribe('annotations.forCase', caseId);
+  const annotations = Collections.Annotations.find({ caseId }).fetch();
   const annotationsWithLabels = annotations.map(
     annotation => ({ ...annotation, label: Collections.Labels.findOne(annotation.labelId) })
   );

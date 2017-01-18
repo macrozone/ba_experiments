@@ -24,7 +24,7 @@ const accuracyBsStyle = (accuracy) => {
   }
   return 'success';
 };
-const Component = ({ styles, nextSample, setCTSample, showAnnotations, toggleAnnotations, accuracy, classification }) => (
+const Component = ({ styles, nextSample, setCTSample, showAnnotations, toggleAnnotations, accuracy, classification, currentLabelId, setCurrentLabel }) => (
   <div style={styles.base}>
     <Button
       onClick={() => toggleAnnotations()} bsStyle="default"
@@ -43,7 +43,7 @@ const Component = ({ styles, nextSample, setCTSample, showAnnotations, toggleAnn
         />
       }
     />
-    <LabelSelect />
+    <LabelSelect labelId={currentLabelId} onChange={setCurrentLabel} />
     <AnnotationToolBar />
 
     <SegmentationOptions />
@@ -52,13 +52,13 @@ const Component = ({ styles, nextSample, setCTSample, showAnnotations, toggleAnn
         onClick={nextSample} bsStyle="primary"
       >
             Next
-        </Button>
+      </Button>
 
       <Button
         onClick={setCTSample} bsStyle="default"
       >
             CT Sample
-        </Button>
+      </Button>
 
     </ButtonGroup>
     <Progress />

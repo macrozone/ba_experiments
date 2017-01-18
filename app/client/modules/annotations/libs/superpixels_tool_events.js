@@ -10,9 +10,13 @@ export default ({
       onClick: ({ evt: { x, y } }) => {
         const { LocalState, Collections: { AnnotationBitmaps, Labels } } = context();
         const labelId = LocalState.get('labels.currentLabelId');
+        if (!labelId) {
+          window.alert('Please select a label');
+          return;
+        }
         const label = Labels.findOne(labelId);
         const color = new Color(label.color);
-        const colorArray = color.rgbArray();
+        const colorArray = color.rgb().array();
         const { canvas, getSegmentForClick } = segmentation;
         const { width, height } = canvas;
       // console.log(x,y);

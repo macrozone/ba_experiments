@@ -6,6 +6,10 @@ export default {
     { caseId, type, props }
   ) {
     const labelId = LocalState.get('labels.currentLabelId');
+    if (!labelId) {
+      window.alert('Please select a label');
+      return;
+    }
     const annotationId = Annotations.insert(
       { caseId, type, labelId, props }
     );

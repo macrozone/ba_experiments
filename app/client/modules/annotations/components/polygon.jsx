@@ -4,8 +4,8 @@ import Color from 'color';
 const Polygon = ({isCurrent, isSelected, color, cursorPosition, props: {points, tension},onClick, stopEditingCurrentAnnotation, draggable}) => {
   const colorInstance = Color(color);
   const colors = {
-    stroke: colorInstance.clearer(0.2).rgbString(),
-    fill: colorInstance.clearer(isSelected ? 0.5 : 0.8).rgbString()
+    stroke: colorInstance.fade(0.2).rgb().string(),
+    fill: colorInstance.fade(isSelected ? 0.5 : 0.8).rgb().string()
   };
 
   return <Group draggable={draggable}>

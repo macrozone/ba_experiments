@@ -184,11 +184,7 @@ const Pet3DViewer = class extends React.Component {
               near={0.1}
               far={1000}
             />
-            {slices.x.map(
-              index => (
-                <Slice axis="x" opacity={opacity} index={index} key={index} />
-              )
-            )}
+
             {slices.y.map(
               index => (
                 <Slice axis="y" opacity={opacity} index={index} key={index} />

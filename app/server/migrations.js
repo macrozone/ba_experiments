@@ -1,3 +1,4 @@
+
 import { resetDatabase } from 'meteor/xolvio:cleaner';
 import _ from 'lodash';
 import Labels from '/lib/collections/labels';

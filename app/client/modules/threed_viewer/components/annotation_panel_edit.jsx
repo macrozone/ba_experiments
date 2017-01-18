@@ -30,6 +30,7 @@ const Component = ({ styles, setAnnotationLabelId, deleteAnnotation, annotation,
   );
 };
 
+
 const AnnotationPanelEdit = withTheme(Styles, Component);
 
 AnnotationPanelEdit.propTypes = {

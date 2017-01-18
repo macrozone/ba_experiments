@@ -5,24 +5,25 @@ import getCursorPositionOnRay from '../libs/get_cursor_position_on_ray';
 
 const PositionHandle = ({ position, radius = 8 }) => (
   <Object3D position={position}>
+
     <Mesh
       geometry={new THREE.SphereBufferGeometry(radius, 32, 32)}
       material={new THREE.MeshBasicMaterial({
-        color: 0xffff00,
-        opacity: 0.6,
+        color: 0x888888,
+        opacity: 1,
         transparent: true,
         depthTest: false,
         blending: THREE.AdditiveBlending,
       })}
     />
-
     <Mesh
-      geometry={new THREE.SphereBufferGeometry(1, 32, 32)}
+      geometry={new THREE.SphereBufferGeometry(0.8, 32, 32)}
       material={new THREE.MeshBasicMaterial({
         color: 0xff0000,
-        opacity: 0.8,
+        opacity: 0.6,
         transparent: true,
         depthTest: false,
+        blending: THREE.NormalBlending,
       })}
     />
   </Object3D>

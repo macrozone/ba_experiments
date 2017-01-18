@@ -1,6 +1,7 @@
-
+/*
 import Annotations from '/lib/collections/annotations';
 import Cases from '/lib/collections/cases';
+
 import gd from 'node-gd';
 import _ from 'lodash';
 import fs from 'fs';
@@ -116,3 +117,4 @@ export const exportAllCases = () => {
     exportCase(aCase._id, 'PRtafRzrete8spaWm');
   });
 };
+*/

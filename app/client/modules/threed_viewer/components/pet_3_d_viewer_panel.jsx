@@ -42,16 +42,10 @@ const Component = ({ styles, caseId, theCase, setCase }) => {
 
   return (
     <div style={styles.base}>
-
-
       <CaseSelect type="pet" caseId={caseId} onChange={setCase} />
-
       {caseId && <CaseLabel caseId={caseId} />}
-
       <AnnotationPanel caseId={caseId} />
-
       <ToggleAxesButton />
-
       <h2>PET settings</h2>
       <Slider
         label="minSuv"

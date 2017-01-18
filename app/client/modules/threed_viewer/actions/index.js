@@ -47,19 +47,19 @@ export default {
         }
       }
     },
-    handleAnnotationToolClick({ FlowRouter, Collections: { Annotations }, LocalState }, ray) {
+    handleAnnotationToolClick(context, ray) {
+      const { FlowRouter, Collections: { Annotations }, LocalState } = context;
       const tool = LocalState.get('pet_3d_viewer.currentAnnotationTool');
 
       const labelId = LocalState.get('labels.currentLabelId');
       const caseId = FlowRouter.getParam('caseId');
       if (!caseId) {
-        alert('Please select a case');
+        window.alert('Please select a case');
         return;
       }
       if (!tool || !tool.type) {
         return;
       }
-      const cameraRay = LocalState.get('pet_3_d_viewer.cameraRay');
       const camera = LocalState.get('pet_3_d_viewer.camera');
 
       // add a guiding ray if it has none
@@ -74,14 +74,16 @@ export default {
         */
       } else if (!_.get(tool, 'position')) {
         // already has a guide, but no position
-        const position = getCursorPositionOnRay({ camera, cameraRay, markerRay: tool.ray });
+        const position = getCursorPositionOnRay(
+          { camera, cameraRay: ray, markerRay: tool.ray }
+        );
         LocalState.set('pet_3d_viewer.currentAnnotationTool', { ...tool, position });
       } else {
         if (!labelId) {
-          alert('Please select a label');
+          window.alert('Please select a label');
           return;
         }
-        const radius = new THREE.Ray().copy(cameraRay).distanceToPoint(tool.position);
+        const radius = new THREE.Ray().copy(ray).distanceToPoint(tool.position);
         Annotations.insert({
           caseId,
           labelId,

@@ -1,4 +1,4 @@
-/*
+
 import Annotations from '/lib/collections/annotations';
 import Cases from '/lib/collections/cases';
 
@@ -86,9 +86,9 @@ export const exportCase = (caseId, labelId) => {
           }
         }
         // we need optionally some pet data for the notebook, we create some simple data
-        if (petArray[index] > 5.0) {
-          // todo: create nice color
-          petImage.setPixel(x, z, labelColor);
+        if (petArray[index] > 0) {
+          const color = gd.trueColor(parseInt(petArray[index], 0), 0, 0); // for python notebook
+          petImage.setPixel(x, z, color);
         }
       }
     }
@@ -117,4 +117,3 @@ export const exportAllCases = () => {
     exportCase(aCase._id, 'PRtafRzrete8spaWm');
   });
 };
-*/

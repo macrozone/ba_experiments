@@ -13,14 +13,15 @@ import PointCloudModel from '../containers/point_cloud_model';
 import { Alert } from 'react-bootstrap';
 import AnnotationTools3D from '../containers/annotation_tools_3_d';
 import Annotations3D from '../containers/annotations_3_d';
-
+import OculusRiftEffect from '/client/lib/OculusRiftEffect.js';
+let oculusRiftEffect;
 const Pet3DViewer = class extends React.Component {
 
   constructor(props, context) {
     super(props, context);
     this.state = {
       dimensions: {
-        width: 100, height: 100,
+        width: 300, height: 300,
       },
     };
   }
@@ -53,13 +54,14 @@ const Pet3DViewer = class extends React.Component {
         far={1000}
       />
     );
+
     return (
       <Measure
         onMeasure={(dimensions) => {
           this.setState({ dimensions });
         }}
       >
-        <div style={{ height: '100%', width: '100%' }}>
+        <div style={{ zIndex: 100, top: 0, left: 0, position: 'fixed', height: '100%', width: '100%' }}>
           {!this.props.modelIsLoaded && (
             <div style={{ fontWeight: 'bold', color: 'white', position: 'absolute', top: 10, left: 10 }}>
               Loading...
@@ -68,25 +70,23 @@ const Pet3DViewer = class extends React.Component {
           <Renderer
             width={width}
             height={height}
+            ref={(ref) => {
+              if (ref && !oculusRiftEffect) {
+                console.log(ref, width, height);
+                oculusRiftEffect = new OculusRiftEffect(ref._THREErenderer, { worldScale: 0.001 });
+              }
+              if (oculusRiftEffect) {
+                oculusRiftEffect.setSize(width, height);
+              }
+            }}
+            customRender={(renderer, scene, camera) => {
+              if (oculusRiftEffect) oculusRiftEffect.render(scene, camera);
+            }}
             rendererProps={{
               preserveDrawingBuffer: true, // needed for canvas.toDataURL (in tests)
             }}
           >
-            <Scene
-              camera="maincamera"
-              width={width}
-              height={height}
-            >
-              {camera}
 
-              <PointCloudModel
-                key={this.props.caseId}
-                currentCase={this.props.currentCase}
-                onLoadStart={this.props.showModelLoadingMessage}
-                onLoadFinish={this.props.hideModelLoadingMessage}
-              />
-
-            </Scene>
             <Scene
             // a second scene for tools, because otherwise there are
             // z-index problems with the mesh
@@ -112,6 +112,21 @@ const Pet3DViewer = class extends React.Component {
               <AnnotationTools3D caseId={this.props.caseId} />
               <Annotations3D caseId={this.props.caseId} />
               <Axes />
+            </Scene>
+            <Scene
+              camera="maincamera"
+              width={width}
+              height={height}
+            >
+              {camera}
+
+              <PointCloudModel
+                key={this.props.caseId}
+                currentCase={this.props.currentCase}
+                onLoadStart={this.props.showModelLoadingMessage}
+                onLoadFinish={this.props.hideModelLoadingMessage}
+              />
+
             </Scene>
           </Renderer>
         </div>
